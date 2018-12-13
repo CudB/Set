@@ -31,11 +31,14 @@ class ViewController: UIViewController {
         for index in cardButtons.indices {
             let button = cardButtons[index]
             let card = game.cards[index]
+            button.layer.cornerRadius = 8.0
             assignCardFace(to: button, from: card)
             if highlighted[card] == true {
-                button.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+                button.layer.borderWidth = 3.0
+                button.layer.borderColor = UIColor.blue.cgColor
             } else {
-                button.backgroundColor = #colorLiteral(red: 0.3744180799, green: 0.573108077, blue: 0.9730513692, alpha: 1)
+                
+                button.layer.borderWidth = 0
             }
         }
     }
@@ -43,11 +46,7 @@ class ViewController: UIViewController {
     private func assignCardFace(to button: UIButton, from card: SetCard) {
         var shape: String
         var color: UIColor
-        var number: Int
-        let attributes: [NSAttributedString.Key:Any] = [
-            .strokeWidth: 5.0,
-            .strokeColor: #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
-        ]
+        var attributes: [NSAttributedString.Key:Any]
         
         switch card.shape {
         case .circle:
@@ -59,22 +58,41 @@ class ViewController: UIViewController {
         }
         
         switch card.number {
+        case .one:
+            break
         case .two:
             shape = repeatChar(shape, count: 2)
         case .three:
             shape = repeatChar(shape, count: 3)
-        default:
-            break
         }
         
-//        switch card.color {
-//        case .red:
-//
-//        }
+        switch card.color {
+        case .red:
+            color = UIColor.red
+        case .green:
+            color = UIColor.green
+        case .blue:
+            color = UIColor.blue
+        }
+        
+        switch card.shading {
+        case .open:
+            attributes = [
+                .strokeWidth: 5.0,
+                .strokeColor: color
+            ]
+        case .solid:
+            attributes = [
+                .foregroundColor: color
+            ]
+        case .striped:
+            attributes = [
+                .foregroundColor: color.withAlphaComponent(0.15)
+            ]
+        }
         
         let attributedString = NSAttributedString(string: shape, attributes: attributes)
         button.setAttributedTitle(attributedString, for: UIControl.State.normal)
-        
     }
     
     func chooseCard(at card: SetCard) {
