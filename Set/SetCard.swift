@@ -11,14 +11,14 @@ import Foundation
 class SetCard : Card 
 {
     let number: Number
-    let shape: Shape
+    let symbol: Symbol
     let color: Color
     let shading: Shading
     
-    init(number: Number, shape: Shape, color: Color, shading: Shading) {
+    init(number: Number, symbol: Symbol, color: Color, shading: Shading) {
         self.number = number
         self.color = color
-        self.shape = shape
+        self.symbol = symbol
         self.shading = shading
     }
 }

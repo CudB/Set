@@ -20,7 +20,8 @@ class ViewController: UIViewController {
     
     @IBAction func touchCard(_ sender: UIButton) {
         if let cardNumber = cardButtons.index(of: sender) {
-            chooseCard(at: game.cards[cardNumber])
+//            game.chooseCard(at: game.cards[cardNumber])
+            game.chooseCard(at: cardNumber)
             updateViewFromModel()
         } else {
             print("Chosen card was not in cardButtons.")
@@ -33,37 +34,46 @@ class ViewController: UIViewController {
             let card = game.cards[index]
             button.layer.cornerRadius = 8.0
             assignCardFace(to: button, from: card)
-            if highlighted[card] == true {
-                button.layer.borderWidth = 3.0
-                button.layer.borderColor = UIColor.blue.cgColor
-            } else {
-                
-                button.layer.borderWidth = 0
+//            if highlighted[card] == true {
+//                button.layer.borderWidth = 3.0
+//                button.layer.borderColor = UIColor.blue.cgColor
+//            } else {
+//                button.layer.borderWidth = 1.0
+//                button.layer.borderColor = UIColor.black.cgColor
+//            }
+            button.layer.borderWidth = 1.0
+            button.layer.borderColor = UIColor.black.cgColor
+            for chosenIndex in game.chosenCardIndices {
+                if chosenIndex == index {
+                    button.layer.borderWidth = 3.0
+                    button.layer.borderColor = UIColor.blue.cgColor
+                }
             }
         }
     }
     
+    // Assigns a face to each button using a card's attributes
     private func assignCardFace(to button: UIButton, from card: SetCard) {
-        var shape: String
+        var symbol: String
         var color: UIColor
         var attributes: [NSAttributedString.Key:Any]
         
-        switch card.shape {
+        switch card.symbol {
         case .circle:
-            shape = "●"
+            symbol = "●"
         case .square:
-            shape = "■"
+            symbol = "■"
         case .triangle:
-            shape = "▲"
+            symbol = "▲"
         }
         
         switch card.number {
         case .one:
             break
         case .two:
-            shape = repeatChar(shape, count: 2)
+            symbol = repeatString(string: symbol, for: 2)
         case .three:
-            shape = repeatChar(shape, count: 3)
+            symbol = repeatString(string: symbol, for: 3)
         }
         
         switch card.color {
@@ -91,27 +101,28 @@ class ViewController: UIViewController {
             ]
         }
         
-        let attributedString = NSAttributedString(string: shape, attributes: attributes)
+        let attributedString = NSAttributedString(string: symbol, attributes: attributes)
         button.setAttributedTitle(attributedString, for: UIControl.State.normal)
     }
+//
+//    func chooseCard(at card: SetCard) {
+//        if highlighted[card] == true {
+//            highlighted[card] = false
+//        } else {
+//            highlighted[card] = true
+//        }
+//    }
     
-    func chooseCard(at card: SetCard) {
-        if highlighted[card] == true {
-            highlighted[card] = false
-        } else {
-            highlighted[card] = true
-        }
-    }
-    
-    private func repeatChar(_ char: String, count: Int) -> String {
-        var repeatedString = char
+    // Takes a string and repeats it count number of times
+    private func repeatString(string: String, for count: Int) -> String {
+        var repeatedString = string
         for _ in 1..<count {
-            repeatedString += char
+            repeatedString += string
         }
         return repeatedString
     }
     
-    private var highlighted = [SetCard:Bool]()
+//    private var highlighted = [SetCard:Bool]()
     
     
     
