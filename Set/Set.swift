@@ -25,6 +25,7 @@ struct Set {
                 }
             }
         }
+        sortCards(cards: &cards)
         startNewGame()
     }
 }
@@ -32,8 +33,8 @@ struct Set {
 // Sorts an array of SetCard by modifying it directly.
 private func sortCards(cards: inout [SetCard]) {
     var sortedCards = [SetCard]()
-    for index in cards.indices {
-        sortedCards[index] = cards.remove(at: cards.count.arc4random)
+    for _ in 1...cards.count {
+        sortedCards += [cards.remove(at: cards.count.arc4random)]
     }
     cards = sortedCards
 }
