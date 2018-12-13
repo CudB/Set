@@ -3,7 +3,7 @@
 //  Concentration
 //
 //  Created by Andy Au on 2018-09-12.
-//  Copyright © 2018 Standford University. All rights reserved.
+//  Copyright © 2018 Stanford University. All rights reserved.
 //
 
 import Foundation

@@ -3,7 +3,7 @@
 //  Set
 //
 //  Created by Andy Au on 2018-12-11.
-//  Copyright © 2018 Standford University. All rights reserved.
+//  Copyright © 2018 Stanford University. All rights reserved.
 //
 
 import UIKit

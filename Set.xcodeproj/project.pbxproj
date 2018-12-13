@@ -120,7 +120,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 1010;
-				ORGANIZATIONNAME = "Standford University";
+				ORGANIZATIONNAME = "Stanford University";
 				TargetAttributes = {
 					A19D349221C02A5D0035B549 = {
 						CreatedOnToolsVersion = 10.1;
@@ -321,7 +321,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = standford.Set;
+				PRODUCT_BUNDLE_IDENTIFIER = stanford.Set;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -339,7 +339,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = standford.Set;
+				PRODUCT_BUNDLE_IDENTIFIER = stanford.Set;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
