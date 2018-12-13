@@ -15,6 +15,7 @@
 		A19D34AA21C175DF0035B549 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19D34A921C175DF0035B549 /* Card.swift */; };
 		A19D34AC21C180370035B549 /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19D34AB21C180370035B549 /* Set.swift */; };
 		A19D34AE21C185100035B549 /* SetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19D34AD21C185100035B549 /* SetCard.swift */; };
+		A19D34B121C20BE90035B549 /* Int+RandomNumberGeneration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19D34B021C20BE90035B549 /* Int+RandomNumberGeneration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		A19D34A921C175DF0035B549 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		A19D34AB21C180370035B549 /* Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
 		A19D34AD21C185100035B549 /* SetCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCard.swift; sourceTree = "<group>"; };
+		A19D34B021C20BE90035B549 /* Int+RandomNumberGeneration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+RandomNumberGeneration.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 		A19D349521C02A5D0035B549 /* Set */ = {
 			isa = PBXGroup;
 			children = (
+				A19D34AF21C20BBA0035B549 /* Extensions */,
 				A19D34A821C02D490035B549 /* Supporting Files */,
 				A19D349821C02A5D0035B549 /* ViewController.swift */,
 				A19D349A21C02A5E0035B549 /* Main.storyboard */,
@@ -79,6 +82,14 @@
 				A19D349F21C02A5F0035B549 /* LaunchScreen.storyboard */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A19D34AF21C20BBA0035B549 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A19D34B021C20BE90035B549 /* Int+RandomNumberGeneration.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -156,6 +167,7 @@
 				A19D34AC21C180370035B549 /* Set.swift in Sources */,
 				A19D349921C02A5D0035B549 /* ViewController.swift in Sources */,
 				A19D34AA21C175DF0035B549 /* Card.swift in Sources */,
+				A19D34B121C20BE90035B549 /* Int+RandomNumberGeneration.swift in Sources */,
 				A19D349721C02A5D0035B549 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -29,6 +29,16 @@ struct Set {
     }
 }
 
+// Sorts an array of SetCard by modifying it directly.
+private func sortCards(cards: inout [SetCard]) {
+    var sortedCards = [SetCard]()
+    for index in cards.indices {
+        sortedCards[index] = cards.remove(at: cards.count.arc4random)
+    }
+    cards = sortedCards
+}
+
+// The following enums define possible card attributes.
 enum Number: CaseIterable {
     case one, two, three
 }
