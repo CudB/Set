@@ -18,6 +18,8 @@ class ViewController: UIViewController {
 
     @IBOutlet var cardButtons: [UIButton]!
     
+    @IBOutlet weak var scoreLabel: UILabel!
+    
     @IBAction func touchCard(_ sender: UIButton) {
         if let cardNumber = cardButtons.index(of: sender) {
 //            game.chooseCard(at: game.cards[cardNumber])
@@ -34,22 +36,26 @@ class ViewController: UIViewController {
             let card = game.cards[index]
             button.layer.cornerRadius = 8.0
             assignCardFace(to: button, from: card)
-//            if highlighted[card] == true {
-//                button.layer.borderWidth = 3.0
-//                button.layer.borderColor = UIColor.blue.cgColor
-//            } else {
-//                button.layer.borderWidth = 1.0
-//                button.layer.borderColor = UIColor.black.cgColor
-//            }
             button.layer.borderWidth = 1.0
             button.layer.borderColor = UIColor.black.cgColor
             for chosenIndex in game.chosenCardIndices {
                 if chosenIndex == index {
-                    button.layer.borderWidth = 3.0
-                    button.layer.borderColor = UIColor.blue.cgColor
+                    if game.matched {
+                        button.layer.borderWidth = 3.0
+                        if game.successfulMatch {
+                            button.layer.borderColor = UIColor.green.cgColor
+                        } else {
+                            button.layer.borderColor = UIColor.red.cgColor
+                        }
+                        
+                    } else {
+                        button.layer.borderWidth = 3.0
+                        button.layer.borderColor = UIColor.blue.cgColor
+                    }
                 }
             }
         }
+        scoreLabel.text = "Score: \(game.score.value)"
     }
     
     // Assigns a face to each button using a card's attributes
@@ -104,14 +110,6 @@ class ViewController: UIViewController {
         let attributedString = NSAttributedString(string: symbol, attributes: attributes)
         button.setAttributedTitle(attributedString, for: UIControl.State.normal)
     }
-//
-//    func chooseCard(at card: SetCard) {
-//        if highlighted[card] == true {
-//            highlighted[card] = false
-//        } else {
-//            highlighted[card] = true
-//        }
-//    }
     
     // Takes a string and repeats it count number of times
     private func repeatString(string: String, for count: Int) -> String {
@@ -121,12 +119,5 @@ class ViewController: UIViewController {
         }
         return repeatedString
     }
-    
-//    private var highlighted = [SetCard:Bool]()
-    
-    
-    
-    
-    
 }
 

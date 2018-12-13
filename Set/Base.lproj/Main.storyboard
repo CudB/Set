@@ -294,8 +294,8 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1XO-zt-knB">
-                                <rect key="frame" x="165.5" y="25" width="44.5" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1XO-zt-knB">
+                                <rect key="frame" x="155.5" y="25" width="64" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -335,6 +335,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="scoreLabel" destination="1XO-zt-knB" id="UD2-xw-cdu"/>
                         <outletCollection property="cardButtons" destination="sVr-2k-zHJ" collectionClass="NSMutableArray" id="u3p-7w-dRg"/>
                         <outletCollection property="cardButtons" destination="Sxg-f5-ylP" collectionClass="NSMutableArray" id="P6S-aN-fcZ"/>
                         <outletCollection property="cardButtons" destination="crK-OW-Grf" collectionClass="NSMutableArray" id="mry-z0-P6V"/>

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A157D49A21C30CAF00C02252 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = A157D49921C30CAF00C02252 /* Score.swift */; };
 		A19D349721C02A5D0035B549 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19D349621C02A5D0035B549 /* AppDelegate.swift */; };
 		A19D349921C02A5D0035B549 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19D349821C02A5D0035B549 /* ViewController.swift */; };
 		A19D349C21C02A5E0035B549 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A19D349A21C02A5E0035B549 /* Main.storyboard */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A157D49921C30CAF00C02252 /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
 		A19D349321C02A5D0035B549 /* Set.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Set.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A19D349621C02A5D0035B549 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A19D349821C02A5D0035B549 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -46,6 +48,7 @@
 		A19D348A21C02A5D0035B549 = {
 			isa = PBXGroup;
 			children = (
+				A157D49921C30CAF00C02252 /* Score.swift */,
 				A19D349521C02A5D0035B549 /* Set */,
 				A19D349421C02A5D0035B549 /* Products */,
 			);
@@ -163,6 +166,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A157D49A21C30CAF00C02252 /* Score.swift in Sources */,
 				A19D34AE21C185100035B549 /* SetCard.swift in Sources */,
 				A19D34AC21C180370035B549 /* Set.swift in Sources */,
 				A19D349921C02A5D0035B549 /* ViewController.swift in Sources */,
