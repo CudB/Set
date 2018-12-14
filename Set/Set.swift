@@ -36,18 +36,15 @@ struct Set {
             // Checks if a match occurs.
             if chosenCardIndices.count == maxChosenCards {
                 matched = true
-                //TODO: Reenable this later
+                
                 // Checks if cards match successfully and applies a score bonus or penalty.
-//                if threeSetCardsMatchSuccessfully(cardOne: cards[chosenCardIndices[0]], cardTwo: cards[chosenCardIndices[1]], cardThree: cards[chosenCardIndices[2]]) {
-                if true {
+                if threeSetCardsMatchSuccessfully(cardOne: drawnCards[chosenCardIndices[0]], cardTwo: drawnCards[chosenCardIndices[1]], cardThree: drawnCards[chosenCardIndices[2]]) {
                     successfulMatch = true
                     score.increaseScore(by: 5)
-                    //TODO: Move matched cards out of deck
+                    // Sorts the indices so the cards are removed from the deck in descending order to prevent any out of bound errors.
                     chosenCardIndices.sort(by: >)
                     for chosenCard in chosenCardIndices {
-                        //TODO: This needs to remove greatest index to smallest.
-                        // Right now it crashes because removing index out of bounds after removing a lower index first
-                        print("removed \(chosenCard)")
+                        assert(drawnCards.indices.contains(chosenCard), "Concentration.chooseCard(at: \(index)): chosen index not in the cards")
                         drawnCards.remove(at: chosenCard)
                     }
                 } else {
@@ -60,12 +57,11 @@ struct Set {
         }
     }
     
-    //TODO: make sure this works
-    mutating func drawCard() {
+    mutating func drawCards() {
+        assert(cards.count >= 3, "There aren't at least three cards to draw.")
+        assert(drawnCards.count < 24, "There are too many drawn cards.")
         for _ in 0..<3 {
-            if let card = cards.first {
-                drawnCards.append(card)
-            }
+            drawnCards.append(cards.removeFirst())
         }
     }
     

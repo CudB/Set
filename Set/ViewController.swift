@@ -14,6 +14,10 @@ class ViewController: UIViewController {
         newGameButton.layer.cornerRadius = 3.0
         addCardsButton.layer.cornerRadius = 3.0
         updateViewFromModel()
+        for index in cardButtons.indices {
+            let button = cardButtons[index]
+            button.layer.cornerRadius = 8.0
+        }
     }
     
     private lazy var game = Set()
@@ -26,7 +30,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var remainingCardsLabel: UILabel!
     
     @IBAction func addCardsButton(_ sender: UIButton) {
-        //TODO: Add new cards
+        game.drawCards()
+        updateViewFromModel()
     }
     
     @IBAction func newGameButton(_ sender: UIButton) {
@@ -35,7 +40,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func touchCard(_ sender: UIButton) {
-        print("button number: \(String(describing: cardButtons.index(of: sender)))")
         if let cardNumber = cardButtons.index(of: sender) {
             game.chooseCard(at: cardNumber)
             updateViewFromModel()
@@ -52,19 +56,16 @@ class ViewController: UIViewController {
                 disableButton(button: button)
             } else {
                 enableButton(button: button)
+                button.layer.borderColor = UIColor.black.cgColor
                 let card = game.drawnCards[index]
                 assignCardFace(to: button, from: card)
                 for chosenIndex in game.chosenCardIndices {
                     if chosenIndex == index {
                         if game.matched {
-//                            button.layer.borderWidth = 3.0
-                            if game.successfulMatch {
-//                                button.layer.borderColor = UIColor.green.cgColor
-                            } else {
+                            if !game.successfulMatch {
                                 button.layer.borderWidth = 3.0
                                 button.layer.borderColor = UIColor.red.cgColor
                             }
-                            
                         } else {
                             button.layer.borderWidth = 3.0
                             button.layer.borderColor = UIColor.blue.cgColor
@@ -74,16 +75,15 @@ class ViewController: UIViewController {
             }
         }
         scoreLabel.text = "SCORE: \(game.score.value)"
-        remainingCardsLabel.text = "CARDS LEFT: \(game.cards.count + game.drawnCards.count)"
+        remainingCardsLabel.text = "\(game.cards.count) CARDS IN DECK"
         
-        //TODO: Make sure this works
-        // Disables addCardsButton if there are not enough cards in the deck.
-        if game.cards.count > 0 {
-            addCardsButton.isEnabled = true
-            addCardsButton.backgroundColor = #colorLiteral(red: 0.3744180799, green: 0.573108077, blue: 0.9730513692, alpha: 1)
-        } else {
+        // Disables addCardsButton if there are not enough cards in the deck or if there are 24 drawn cards.
+        if game.cards.count < 1 || game.drawnCards.count == 24{
             addCardsButton.isEnabled = false
             addCardsButton.backgroundColor = #colorLiteral(red: 0.3998717944, green: 0.3998717944, blue: 0.3998717944, alpha: 0.3076305651)
+        } else {
+            addCardsButton.isEnabled = true
+            addCardsButton.backgroundColor = #colorLiteral(red: 0.3744180799, green: 0.573108077, blue: 0.9730513692, alpha: 1)
         }
     }
     
@@ -98,10 +98,8 @@ class ViewController: UIViewController {
         button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         button.isEnabled = true
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.black.cgColor
-        button.layer.cornerRadius = 8.0
     }
-    
+
     // Assigns a face to each button using a card's attributes
     private func assignCardFace(to button: UIButton, from card: SetCard) {
         var symbol: String
