@@ -11,18 +11,28 @@ import UIKit
 class ViewController: UIViewController {
     // Overrides the default UI colors to match the selected theme when the app is loaded.
     override func viewDidLoad() {
+        newGameButton.layer.cornerRadius = 3.0
+        addCardsButton.layer.cornerRadius = 3.0
         updateViewFromModel()
     }
     
     private lazy var game = Set()
 
     @IBOutlet var cardButtons: [UIButton]!
-    
+    @IBOutlet weak var newGameButton: UIButton!
+    @IBOutlet weak var addCardsButton: UIButton!
     @IBOutlet weak var scoreLabel: UILabel!
+    
+    @IBAction func addCardsButton(_ sender: UIButton) {
+    }
+    
+    @IBAction func newGameButton(_ sender: UIButton) {
+        game.startNewGame()
+        updateViewFromModel()
+    }
     
     @IBAction func touchCard(_ sender: UIButton) {
         if let cardNumber = cardButtons.index(of: sender) {
-//            game.chooseCard(at: game.cards[cardNumber])
             game.chooseCard(at: cardNumber)
             updateViewFromModel()
         } else {
@@ -55,7 +65,7 @@ class ViewController: UIViewController {
                 }
             }
         }
-        scoreLabel.text = "Score: \(game.score.value)"
+        scoreLabel.text = "SCORE: \(game.score.value)"
     }
     
     // Assigns a face to each button using a card's attributes

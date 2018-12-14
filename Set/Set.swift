@@ -31,9 +31,10 @@ struct Set {
             // Remove currently selected cards if the maximum allowed has already been selected before selecting a new one.
             chosenCardIndices.append(index)
             matched = false
+            // Checks if a match occurs.
             if chosenCardIndices.count == maxChosenCards {
                 matched = true
-                // Checks if cards match successfully
+                // Checks if cards match successfully and applies a score bonus or penalty.
                 if threeSetCardsMatchSuccessfully(cardOne: cards[chosenCardIndices[0]], cardTwo: cards[chosenCardIndices[1]], cardThree: cards[chosenCardIndices[2]]) {
                     successfulMatch = true
                     score.increaseScore(by: 5)
@@ -47,31 +48,11 @@ struct Set {
         }
     }
     
-    // Checks if three set cards are a successful match
-    private func threeSetCardsMatchSuccessfully(cardOne: SetCard, cardTwo: SetCard, cardThree: SetCard) -> Bool {
-        if sameOrAllDifferent(cardOne.color, cardTwo.color, cardThree.color) &&
-                sameOrAllDifferent(cardOne.symbol, cardTwo.symbol, cardThree.symbol) &&
-                sameOrAllDifferent(cardOne.shading, cardTwo.shading, cardThree.shading) &&
-                sameOrAllDifferent(cardOne.number, cardTwo.number, cardThree.number) {
-            return true
-        }
-        return false
-    }
-    
-    // Checks three equatable properties of the same type to see if they are all equal or unique.
-    private func sameOrAllDifferent<T: Equatable>(_ a: T, _ b: T, _ c: T) -> Bool {
-        if a == b && a == c {
-            return true
-        } else if a != b && a != c && b != c{
-            return true
-        }
-        return false
-    }
-    
     mutating func startNewGame() {
         score.resetScore()
         matched = false
         successfulMatch = false
+        chosenCardIndices.removeAll()
         sortCards(cards: &cards)
     }
     
@@ -98,6 +79,27 @@ private func sortCards(cards: inout [SetCard]) {
         sortedCards += [cards.remove(at: cards.count.arc4random)]
     }
     cards = sortedCards
+}
+
+// Checks if three set cards are a successful match.
+private func threeSetCardsMatchSuccessfully(cardOne: SetCard, cardTwo: SetCard, cardThree: SetCard) -> Bool {
+    if sameOrAllDifferent(cardOne.color, cardTwo.color, cardThree.color) &&
+        sameOrAllDifferent(cardOne.symbol, cardTwo.symbol, cardThree.symbol) &&
+        sameOrAllDifferent(cardOne.shading, cardTwo.shading, cardThree.shading) &&
+        sameOrAllDifferent(cardOne.number, cardTwo.number, cardThree.number) {
+        return true
+    }
+    return false
+}
+
+// Checks three properties of type T that comform to the Equatable protocol to see if they are all equal or unique.
+private func sameOrAllDifferent<T: Equatable>(_ a: T, _ b: T, _ c: T) -> Bool {
+    if a == b && a == c {
+        return true
+    } else if a != b && a != c && b != c{
+        return true
+    }
+    return false
 }
 
 // The following enums define possible card attributes.
