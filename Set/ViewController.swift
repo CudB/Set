@@ -51,7 +51,8 @@ class ViewController: UIViewController {
     private func updateViewFromModel() {
         for index in cardButtons.indices {
             let button = cardButtons[index]
-            //TODO: fix this
+            
+            // Only enable the button if it is needed to represent a drawn card
             if index >= game.drawnCards.count {
                 disableButton(button: button)
             } else {
@@ -59,16 +60,16 @@ class ViewController: UIViewController {
                 button.layer.borderColor = UIColor.black.cgColor
                 let card = game.drawnCards[index]
                 assignCardFace(to: button, from: card)
+                
+                // Gives a matched card a border color based on if it was just selected or if it was part of an incorrect match.
                 for chosenIndex in game.chosenCardIndices {
                     if chosenIndex == index {
-                        if game.matched {
-                            if !game.successfulMatch {
-                                button.layer.borderWidth = 3.0
-                                button.layer.borderColor = UIColor.red.cgColor
-                            }
-                        } else {
+                        if !game.matched {
                             button.layer.borderWidth = 3.0
                             button.layer.borderColor = UIColor.blue.cgColor
+                        } else if !game.successfulMatch {
+                            button.layer.borderWidth = 3.0
+                            button.layer.borderColor = UIColor.red.cgColor
                         }
                     }
                 }
@@ -87,6 +88,7 @@ class ViewController: UIViewController {
         }
     }
     
+    // Hides a button from view without using .hidden.
     private func disableButton(button: UIButton) {
         button.setAttributedTitle(NSAttributedString(string: ""), for: UIControl.State.normal)
         button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
@@ -94,6 +96,7 @@ class ViewController: UIViewController {
         button.layer.borderWidth = 0
     }
     
+    // Reveals a button from view without using .hidden.
     private func enableButton(button: UIButton) {
         button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         button.isEnabled = true

@@ -38,14 +38,20 @@ struct Set {
                 matched = true
                 
                 // Checks if cards match successfully and applies a score bonus or penalty.
-                if threeSetCardsMatchSuccessfully(cardOne: drawnCards[chosenCardIndices[0]], cardTwo: drawnCards[chosenCardIndices[1]], cardThree: drawnCards[chosenCardIndices[2]]) {
+                if threeSetCardsMatchSuccessfully(drawnCards[chosenCardIndices[0]], drawnCards[chosenCardIndices[1]], drawnCards[chosenCardIndices[2]]) {
                     successfulMatch = true
                     score.increaseScore(by: 5)
+                    
                     // Sorts the indices so the cards are removed from the deck in descending order to prevent any out of bound errors.
                     chosenCardIndices.sort(by: >)
                     for chosenCard in chosenCardIndices {
                         assert(drawnCards.indices.contains(chosenCard), "Concentration.chooseCard(at: \(index)): chosen index not in the cards")
                         drawnCards.remove(at: chosenCard)
+                    }
+                    
+                    // Replaces drawn cards if it drops below a certain number
+                    if drawnCards.count < startingNumOfCards && cards.count >= 3 {
+                        drawCards()
                     }
                 } else {
                     score.decreaseScore(by: 2)
@@ -112,11 +118,11 @@ private func sortCards(cards: inout [SetCard]) {
 }
 
 // Checks if three set cards are a successful match.
-private func threeSetCardsMatchSuccessfully(cardOne: SetCard, cardTwo: SetCard, cardThree: SetCard) -> Bool {
-    if sameOrAllDifferent(cardOne.color, cardTwo.color, cardThree.color) &&
-        sameOrAllDifferent(cardOne.symbol, cardTwo.symbol, cardThree.symbol) &&
-        sameOrAllDifferent(cardOne.shading, cardTwo.shading, cardThree.shading) &&
-        sameOrAllDifferent(cardOne.number, cardTwo.number, cardThree.number) {
+private func threeSetCardsMatchSuccessfully(_ c1: SetCard, _ c2: SetCard, _ c3: SetCard) -> Bool {
+    if sameOrAllDifferent(c1.color, c2.color, c3.color) &&
+        sameOrAllDifferent(c1.symbol, c2.symbol, c3.symbol) &&
+        sameOrAllDifferent(c1.shading, c2.shading, c3.shading) &&
+        sameOrAllDifferent(c1.number, c2.number, c3.number) {
         return true
     }
     return false
@@ -124,9 +130,7 @@ private func threeSetCardsMatchSuccessfully(cardOne: SetCard, cardTwo: SetCard, 
 
 // Takes three properties of type T that comform to the Equatable protocol and checks whether or not they are all equal or unique.
 private func sameOrAllDifferent<T: Equatable>(_ a: T, _ b: T, _ c: T) -> Bool {
-    if a == b && a == c {
-        return true
-    } else if a != b && a != c && b != c{
+    if (a == b && a == c) || (a != b && a != c && b != c) {
         return true
     }
     return false
