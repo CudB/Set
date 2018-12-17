@@ -128,6 +128,19 @@ private func threeSetCardsMatchSuccessfully(_ c1: SetCard, _ c2: SetCard, _ c3: 
     return false
 }
 
+private func detectedSet(cards: [SetCard]) -> Bool {
+    for index1 in 0..<(cards.count - 2) {
+        for index2 in (index1 + 1)..<(cards.count - 1) {
+            for index3 in (index2 + 1)..<cards.count {
+                if threeSetCardsMatchSuccessfully(cards[index1], cards[index2], cards[index3]) {
+                    return true
+                }
+            }
+        }
+    }
+    return false
+}
+
 // Takes three properties of type T that comform to the Equatable protocol and checks whether or not they are all equal or unique.
 private func sameOrAllDifferent<T: Equatable>(_ a: T, _ b: T, _ c: T) -> Bool {
     if (a == b && a == c) || (a != b && a != c && b != c) {
