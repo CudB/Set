@@ -13,6 +13,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         newGameButton.layer.cornerRadius = 3.0
         addCardsButton.layer.cornerRadius = 3.0
+        showSetButton.layer.cornerRadius = 3.0
+        remainingCardsButton.layer.cornerRadius = 3.0
+        remainingCardsButton.layer.borderWidth = 1.0
+        remainingCardsButton.layer.borderColor = UIColor.black.cgColor
+        remainingCardsButton.isEnabled = false
         updateViewFromModel()
         for index in cardButtons.indices {
             let button = cardButtons[index]
@@ -26,11 +31,24 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var newGameButton: UIButton!
     @IBOutlet weak var addCardsButton: UIButton!
+    @IBOutlet weak var showSetButton: UIButton!
     @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet weak var remainingCardsLabel: UILabel!
+//    @IBOutlet weak var remainingCardsLabel: UILabel!
+    @IBOutlet weak var remainingCardsButton: UIButton!
+    
+    @IBAction func showSetButton(_ sender: UIButton) {
+        if let setIndices = game.drawnCards.retrieveSetIndices {
+            for index in setIndices {
+                cardButtons[index].layer.borderWidth = 3.0
+                cardButtons[index].layer.borderColor = UIColor.green.cgColor
+            }
+        } else {
+            print("No sets present")
+        }
+    }
     
     @IBAction func addCardsButton(_ sender: UIButton) {
-        game.drawCards()
+        game.drawCards(amount: 3)
         updateViewFromModel()
     }
     
@@ -54,9 +72,9 @@ class ViewController: UIViewController {
             
             // Only enable the button if it is needed to represent a drawn card
             if index >= game.drawnCards.count {
-                disableButton(button: button)
+                disableCardButton(button: button)
             } else {
-                enableButton(button: button)
+                enableCardButton(button: button)
                 button.layer.borderColor = UIColor.black.cgColor
                 let card = game.drawnCards[index]
                 assignCardFace(to: button, from: card)
@@ -76,29 +94,29 @@ class ViewController: UIViewController {
             }
         }
         scoreLabel.text = "SCORE: \(game.score.value)"
-        remainingCardsLabel.text = "\(game.cards.count) CARDS IN DECK"
+//        remainingCardsLabel.text = "\(game.cards.count) CARDS IN DECK"
+        remainingCardsButton.setTitle("\(game.cards.count)", for: UIControl.State.normal)
         
         // Disables addCardsButton if there are not enough cards in the deck or if there are 24 drawn cards.
         if game.cards.count < 1 || game.drawnCards.count == 24{
             addCardsButton.isEnabled = false
-            addCardsButton.backgroundColor = #colorLiteral(red: 0.3998717944, green: 0.3998717944, blue: 0.3998717944, alpha: 0.3076305651)
+            addCardsButton.alpha = 0.15
         } else {
             addCardsButton.isEnabled = true
-            addCardsButton.backgroundColor = #colorLiteral(red: 0.3744180799, green: 0.573108077, blue: 0.9730513692, alpha: 1)
+            addCardsButton.alpha = 1
         }
     }
     
     // Hides a button from view without using .hidden.
-    private func disableButton(button: UIButton) {
-        button.setAttributedTitle(NSAttributedString(string: ""), for: UIControl.State.normal)
-        button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
+    private func disableCardButton(button: UIButton) {
+        button.alpha = 0
         button.isEnabled = false
         button.layer.borderWidth = 0
     }
     
     // Reveals a button from view without using .hidden.
-    private func enableButton(button: UIButton) {
-        button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+    private func enableCardButton(button: UIButton) {
+        button.alpha = 1
         button.isEnabled = true
         button.layer.borderWidth = 1
     }

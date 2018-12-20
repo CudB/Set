@@ -11,6 +11,7 @@ import Foundation
 struct Set {
     private let maxChosenCards = 3
     private let startingNumOfCards = 12
+    private let maxNumberOfDrawnCards = 24
     private(set) var cards = [SetCard]()
     private(set) var drawnCards = [SetCard]()
     private(set) var chosenCardIndices = [Int]()
@@ -20,7 +21,7 @@ struct Set {
 
     mutating func chooseCard(at index: Int) {
         assert(drawnCards.indices.contains(index), "Concentration.chooseCard(at: \(index)): chosen index not in the cards")
-        outerLoop: if chosenCardIndices.count == 0 {
+        outerLoop: if chosenCardIndices.isEmpty {
             chosenCardIndices.append(index)
         } else {
             for chosenIndex in chosenCardIndices.indices {
@@ -38,23 +39,23 @@ struct Set {
                 matched = true
                 
                 // Checks if cards match successfully and applies a score bonus or penalty.
-                if threeSetCardsMatchSuccessfully(drawnCards[chosenCardIndices[0]], drawnCards[chosenCardIndices[1]], drawnCards[chosenCardIndices[2]]) {
+                if [drawnCards[chosenCardIndices[0]], drawnCards[chosenCardIndices[1]], drawnCards[chosenCardIndices[2]]].successfulMatch {
                     successfulMatch = true
                     score.increaseScore(by: 5)
                     
                     // Sorts the indices so the cards are removed from the deck in descending order to prevent any out of bound errors.
                     chosenCardIndices.sort(by: >)
-                    for chosenCard in chosenCardIndices {
-                        assert(drawnCards.indices.contains(chosenCard), "Concentration.chooseCard(at: \(index)): chosen index not in the cards")
-                        drawnCards.remove(at: chosenCard)
+                    for chosenCardIndex in chosenCardIndices {
+                        assert(drawnCards.indices.contains(chosenCardIndex), "Concentration.chooseCard(at: \(index)): chosen index not in the cards")
+                        drawnCards.remove(at: chosenCardIndex)
                     }
                     
                     // Replaces drawn cards if it drops below a certain number
                     if drawnCards.count < startingNumOfCards && cards.count >= 3 {
-                        drawCards()
+                        drawCards(amount: 3)
                     }
                 } else {
-                    score.decreaseScore(by: 2)
+                    score.decreaseScore(by: 10)
                     successfulMatch = false
                 }
             } else if chosenCardIndices.count > maxChosenCards {
@@ -63,10 +64,10 @@ struct Set {
         }
     }
     
-    mutating func drawCards() {
-        assert(cards.count >= 3, "There aren't at least three cards to draw.")
-        assert(drawnCards.count < 24, "There are too many drawn cards.")
-        for _ in 0..<3 {
+    mutating func drawCards(amount: Int) {
+        assert(cards.count >= amount, "There aren't at least \(amount) cards to draw.")
+        assert(drawnCards.count < maxNumberOfDrawnCards, "There are too many drawn cards.")
+        for _ in 0..<amount {
             drawnCards.append(cards.removeFirst())
         }
     }
@@ -77,14 +78,12 @@ struct Set {
         matched = false
         successfulMatch = false
         chosenCardIndices.removeAll()
+        
+        // Set up a deck and draw cards
         cards = createSetDeck()
         sortCards(cards: &cards)
         drawnCards.removeAll()
-        
-        // Draw the initial cards required to start the game
-        for _ in 0..<startingNumOfCards {
-            drawnCards.append(cards.removeFirst())
-        }
+        drawCards(amount: startingNumOfCards)
     }
     
     init() {
@@ -115,38 +114,6 @@ private func sortCards(cards: inout [SetCard]) {
         sortedCards += [cards.remove(at: cards.count.arc4random)]
     }
     cards = sortedCards
-}
-
-// Checks if three set cards are a successful match.
-private func threeSetCardsMatchSuccessfully(_ c1: SetCard, _ c2: SetCard, _ c3: SetCard) -> Bool {
-    if sameOrAllDifferent(c1.color, c2.color, c3.color) &&
-        sameOrAllDifferent(c1.symbol, c2.symbol, c3.symbol) &&
-        sameOrAllDifferent(c1.shading, c2.shading, c3.shading) &&
-        sameOrAllDifferent(c1.number, c2.number, c3.number) {
-        return true
-    }
-    return false
-}
-
-private func detectedSet(cards: [SetCard]) -> Bool {
-    for index1 in 0..<(cards.count - 2) {
-        for index2 in (index1 + 1)..<(cards.count - 1) {
-            for index3 in (index2 + 1)..<cards.count {
-                if threeSetCardsMatchSuccessfully(cards[index1], cards[index2], cards[index3]) {
-                    return true
-                }
-            }
-        }
-    }
-    return false
-}
-
-// Takes three properties of type T that comform to the Equatable protocol and checks whether or not they are all equal or unique.
-private func sameOrAllDifferent<T: Equatable>(_ a: T, _ b: T, _ c: T) -> Bool {
-    if (a == b && a == c) || (a != b && a != c && b != c) {
-        return true
-    }
-    return false
 }
 
 // The following enums define possible card attributes.
