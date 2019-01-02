@@ -33,7 +33,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var addCardsButton: UIButton!
     @IBOutlet weak var showSetButton: UIButton!
     @IBOutlet weak var scoreLabel: UILabel!
-//    @IBOutlet weak var remainingCardsLabel: UILabel!
     @IBOutlet weak var remainingCardsButton: UIButton!
     
     @IBAction func showSetButton(_ sender: UIButton) {
@@ -43,6 +42,7 @@ class ViewController: UIViewController {
                 cardButtons[index].layer.borderColor = UIColor.green.cgColor
             }
         } else {
+            //TODO: Display a message in the game to let the player know that there are no sets.
             print("No sets present")
         }
     }
@@ -94,7 +94,6 @@ class ViewController: UIViewController {
             }
         }
         scoreLabel.text = "SCORE: \(game.score.value)"
-//        remainingCardsLabel.text = "\(game.cards.count) CARDS IN DECK"
         remainingCardsButton.setTitle("\(game.cards.count)", for: UIControl.State.normal)
         
         // Disables addCardsButton if there are not enough cards in the deck or if there are 24 drawn cards.

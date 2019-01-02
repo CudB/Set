@@ -50,8 +50,8 @@ struct Set {
                         drawnCards.remove(at: chosenCardIndex)
                     }
                     
-                    // Replaces drawn cards if it drops below a certain number
-                    if drawnCards.count < startingNumOfCards && cards.count >= 3 {
+                    // Replaces matched cards.
+                    if cards.count >= 3 {
                         drawCards(amount: 3)
                     }
                 } else {
