@@ -12,12 +12,12 @@ struct Set {
     private let maxChosenCards = 3
     private let startingNumOfCards = 12
     private let maxNumberOfDrawnCards = 24
-    private(set) var cards = [SetCard]()
-    private(set) var drawnCards = [SetCard]()
     private(set) var chosenCardIndices = [Int]()
     private(set) var score = Score()
     private(set) var matched = false
     private(set) var successfulMatch = false
+    private(set) var deck = SetCardDeck()
+    private(set) var drawnCards = [SetCard]()
 
     mutating func chooseCard(at index: Int) {
         assert(drawnCards.indices.contains(index), "Concentration.chooseCard(at: \(index)): chosen index not in the cards")
@@ -51,8 +51,8 @@ struct Set {
                     }
                     
                     // Replaces matched cards.
-                    if cards.count >= 3 {
-                        drawCards(amount: 3)
+                    if deck.cards.count >= 3 {
+                        draw(amount: 3)
                     }
                 } else {
                     score.decreaseScore(by: 10)
@@ -64,12 +64,8 @@ struct Set {
         }
     }
     
-    mutating func drawCards(amount: Int) {
-        assert(cards.count >= amount, "There aren't at least \(amount) cards to draw.")
-        assert(drawnCards.count < maxNumberOfDrawnCards, "There are too many drawn cards.")
-        for _ in 0..<amount {
-            drawnCards.append(cards.removeFirst())
-        }
+    mutating func draw(amount: Int) {
+        drawnCards.append(contentsOf: deck.draw(amount: amount))
     }
     
     mutating func startNewGame() {
@@ -79,53 +75,14 @@ struct Set {
         successfulMatch = false
         chosenCardIndices.removeAll()
         
-        // Set up a deck and draw cards
-        cards = createSetDeck()
-        sortCards(cards: &cards)
+        // Set up a deck and draw cards\
+        deck = SetCardDeck()
+        deck.shuffle()
         drawnCards.removeAll()
-        drawCards(amount: startingNumOfCards)
+        draw(amount: startingNumOfCards)
     }
     
     init() {
         startNewGame()
     }
-}
-
-// Create a complete deck of unique cards for a game of Set.
-private func createSetDeck() -> [SetCard] {
-    var deck = [SetCard]()
-    for number in Number.allCases {
-        for symbol in Symbol.allCases {
-            for color in Color.allCases {
-                for shading in Shading.allCases {
-                    let card = SetCard(number: number, symbol: symbol, color: color, shading: shading)
-                    deck += [card]
-                }
-            }
-        }
-    }
-    return deck
-}
-
-// Sorts an array of SetCard by modifying the input.
-private func sortCards(cards: inout [SetCard]) {
-    var sortedCards = [SetCard]()
-    for _ in 1...cards.count {
-        sortedCards += [cards.remove(at: cards.count.arc4random)]
-    }
-    cards = sortedCards
-}
-
-// The following enums define possible card attributes.
-enum Number: CaseIterable {
-    case one, two, three
-}
-enum Symbol: CaseIterable {
-    case triangle, circle, square
-}
-enum Color: CaseIterable {
-    case red, green, blue
-}
-enum Shading: CaseIterable {
-    case open, striped, solid
 }

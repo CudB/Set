@@ -48,7 +48,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func addCardsButton(_ sender: UIButton) {
-        game.drawCards(amount: 3)
+        game.draw(amount: 3)
         updateViewFromModel()
     }
     
@@ -94,10 +94,10 @@ class ViewController: UIViewController {
             }
         }
         scoreLabel.text = "SCORE: \(game.score.value)"
-        remainingCardsButton.setTitle("\(game.cards.count)", for: UIControl.State.normal)
+        remainingCardsButton.setTitle("\(game.deck.cards.count)", for: UIControl.State.normal)
         
         // Disables addCardsButton if there are not enough cards in the deck or if there are 24 drawn cards.
-        if game.cards.count < 1 || game.drawnCards.count == 24{
+        if game.deck.cards.count < 1 || game.drawnCards.count == 24{
             addCardsButton.isEnabled = false
             addCardsButton.alpha = 0.15
         } else {

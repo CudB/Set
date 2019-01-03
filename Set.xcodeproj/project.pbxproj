@@ -10,6 +10,7 @@
 		A157D49A21C30CAF00C02252 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = A157D49921C30CAF00C02252 /* Score.swift */; };
 		A1642DFF21C96EDB0083E3CD /* Array+DetectExistingSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1642DFE21C96EDB0083E3CD /* Array+DetectExistingSet.swift */; };
 		A1642E0121C971390083E3CD /* Array+CheckIfThreeCardsMakeASet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1642E0021C971390083E3CD /* Array+CheckIfThreeCardsMakeASet.swift */; };
+		A1642E0321DE798A0083E3CD /* SetCardDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1642E0221DE798A0083E3CD /* SetCardDeck.swift */; };
 		A19D349721C02A5D0035B549 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19D349621C02A5D0035B549 /* AppDelegate.swift */; };
 		A19D349921C02A5D0035B549 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19D349821C02A5D0035B549 /* ViewController.swift */; };
 		A19D349C21C02A5E0035B549 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A19D349A21C02A5E0035B549 /* Main.storyboard */; };
@@ -25,6 +26,7 @@
 		A157D49921C30CAF00C02252 /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
 		A1642DFE21C96EDB0083E3CD /* Array+DetectExistingSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+DetectExistingSet.swift"; sourceTree = "<group>"; };
 		A1642E0021C971390083E3CD /* Array+CheckIfThreeCardsMakeASet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+CheckIfThreeCardsMakeASet.swift"; sourceTree = "<group>"; };
+		A1642E0221DE798A0083E3CD /* SetCardDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardDeck.swift; sourceTree = "<group>"; };
 		A19D349321C02A5D0035B549 /* Set.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Set.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A19D349621C02A5D0035B549 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A19D349821C02A5D0035B549 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				A19D34A921C175DF0035B549 /* Card.swift */,
 				A19D34AD21C185100035B549 /* SetCard.swift */,
 				A19D34AB21C180370035B549 /* Set.swift */,
+				A1642E0221DE798A0083E3CD /* SetCardDeck.swift */,
 				A19D34A221C02A5F0035B549 /* Info.plist */,
 			);
 			path = Set;
@@ -177,6 +180,7 @@
 				A1642DFF21C96EDB0083E3CD /* Array+DetectExistingSet.swift in Sources */,
 				A19D34AC21C180370035B549 /* Set.swift in Sources */,
 				A19D349921C02A5D0035B549 /* ViewController.swift in Sources */,
+				A1642E0321DE798A0083E3CD /* SetCardDeck.swift in Sources */,
 				A1642E0121C971390083E3CD /* Array+CheckIfThreeCardsMakeASet.swift in Sources */,
 				A19D34AA21C175DF0035B549 /* Card.swift in Sources */,
 				A19D34B121C20BE90035B549 /* Int+RandomNumberGeneration.swift in Sources */,
