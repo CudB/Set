@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Array where Element: SetCard {
+extension Array where Element == SetCard {
     // Detects a set within an array of type SetCard.
     var detectedSet: Bool {
         for index1 in 0..<(self.count - 2) {
@@ -24,7 +24,7 @@ extension Array where Element: SetCard {
     }
 }
 
-extension Array where Element: SetCard {
+extension Array where Element == SetCard {
     // Retrieve the indices of a matching set if it exists.
     var retrieveSetIndices: [Int]? {
         for index1 in 0..<(self.count - 2) {

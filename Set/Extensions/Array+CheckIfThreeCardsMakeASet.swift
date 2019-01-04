@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Array where Element: SetCard {
+extension Array where Element == SetCard {
     // Checks the first three cards in an array of SetCard and sees if they form a set.
     var successfulMatch: Bool {
         if sameOrAllDifferent(self[0].color, self[1].color, self[2].color) &&

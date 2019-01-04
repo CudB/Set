@@ -9,9 +9,9 @@
 import Foundation
 
 struct Set {
+    let maxDrawnCards = 24
     private let maxChosenCards = 3
     private let startingNumOfCards = 12
-    private let maxNumberOfDrawnCards = 24
     private(set) var chosenCardIndices = [Int]()
     private(set) var score = Score()
     private(set) var matched = false
@@ -43,7 +43,7 @@ struct Set {
                     successfulMatch = true
                     score.increaseScore(by: 5)
                     
-                    // Sorts the indices so the cards are removed from the deck in descending order to prevent any out of bound errors.
+                    // Sort the indices so the cards are removed from the deck in descending order. This ensures the indices of the cards that need to be removed don't change during the for loop.
                     chosenCardIndices.sort(by: >)
                     for chosenCardIndex in chosenCardIndices {
                         assert(drawnCards.indices.contains(chosenCardIndex), "Concentration.chooseCard(at: \(index)): chosen index not in the cards")

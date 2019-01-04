@@ -8,31 +8,47 @@
 
 import Foundation
 
-class SetCard
+//A SetCard consists of four attributes with each attribute having three possible values.
+struct SetCard: CustomStringConvertible
 {
+    var description: String {
+        return "\(number) \(shading) \(color) \(symbol)"
+    }
+    
     let number: Number
     let symbol: Symbol
     let color: Color
     let shading: Shading
     
-    // The following enums define possible card attributes.
-    enum Number: CaseIterable {
-        case one, two, three
-    }
-    enum Symbol: CaseIterable {
-        case triangle, circle, square
-    }
-    enum Color: CaseIterable {
-        case red, green, blue
-    }
-    enum Shading: CaseIterable {
-        case open, striped, solid
+    enum Number: Int, CaseIterable, CustomStringConvertible {
+        case one = 1
+        case two = 2
+        case three = 3
+        
+        var description: String { return String(rawValue) }
     }
     
-    init(number: Number, symbol: Symbol, color: Color, shading: Shading) {
-        self.number = number
-        self.color = color
-        self.symbol = symbol
-        self.shading = shading
+    enum Symbol: String, CaseIterable, CustomStringConvertible {
+        case triangle = "▲"
+        case circle = "●"
+        case square = "■"
+        
+        var description: String { return rawValue }
+    }
+    
+    enum Color: String, CaseIterable, CustomStringConvertible {
+        case red = "red"
+        case green = "green"
+        case blue = "blue"
+        
+        var description: String { return rawValue }
+    }
+    
+    enum Shading: String, CaseIterable, CustomStringConvertible {
+        case open = "open"
+        case striped = "striped"
+        case solid = "solid"
+        
+        var description: String { return rawValue }
     }
 }

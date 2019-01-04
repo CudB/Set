@@ -35,12 +35,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var remainingCardsButton: UIButton!
     
+    // Reveals a possible match to the player.
     @IBAction func showSetButton(_ sender: UIButton) {
         if let setIndices = game.drawnCards.retrieveSetIndices {
             for index in setIndices {
                 cardButtons[index].layer.borderWidth = 3.0
                 cardButtons[index].layer.borderColor = UIColor.green.cgColor
             }
+            //TODO: Penalize player if a set is found.
         } else {
             //TODO: Display a message in the game to let the player know that there are no sets.
             print("No sets present")
@@ -79,13 +81,15 @@ class ViewController: UIViewController {
                 let card = game.drawnCards[index]
                 assignCardFace(to: button, from: card)
                 
-                // Gives a matched card a border color based on if it was just selected or if it was part of an incorrect match.
+                // Gives selected cards a border.
                 for chosenIndex in game.chosenCardIndices {
                     if chosenIndex == index {
                         if !game.matched {
+                            // Border for selected cards.
                             button.layer.borderWidth = 3.0
                             button.layer.borderColor = UIColor.blue.cgColor
                         } else if !game.successfulMatch {
+                            // Border for unsuccessful match.
                             button.layer.borderWidth = 3.0
                             button.layer.borderColor = UIColor.red.cgColor
                         }
@@ -93,11 +97,13 @@ class ViewController: UIViewController {
                 }
             }
         }
+        
+        // Update labels with score and card count.
         scoreLabel.text = "SCORE: \(game.score.value)"
         remainingCardsButton.setTitle("\(game.deck.cards.count)", for: UIControl.State.normal)
         
         // Disables addCardsButton if there are not enough cards in the deck or if there are 24 drawn cards.
-        if game.deck.cards.count < 1 || game.drawnCards.count == 24{
+        if game.deck.cards.count < 1 || game.drawnCards.count == game.maxDrawnCards{
             addCardsButton.isEnabled = false
             addCardsButton.alpha = 0.15
         } else {
