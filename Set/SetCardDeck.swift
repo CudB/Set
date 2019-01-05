@@ -8,8 +8,16 @@
 
 import Foundation
 
-struct SetCardDeck
+struct SetCardDeck: CustomStringConvertible
 {
+    var description: String {
+        var description = ""
+        for (index, card) in cards.enumerated() {
+            description.append("Card " + String(index + 1) + ": " + card.description + "\n")
+        }
+        return description
+    }
+    
     private(set) var cards = [SetCard]()
     
     init() {

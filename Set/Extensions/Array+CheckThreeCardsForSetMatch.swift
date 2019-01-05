@@ -19,12 +19,11 @@ extension Array where Element == SetCard {
         }
         return false
     }
-}
-
-// TODO: Move this to own extension/helper??
-private func sameOrAllDifferent<T: Equatable>(_ a: T, _ b: T, _ c: T) -> Bool {
-    if (a == b && a == c) || (a != b && a != c && b != c) {
-        return true
+    
+    private func sameOrAllDifferent<T: Equatable>(_ a: T, _ b: T, _ c: T) -> Bool {
+        if (a == b && a == c) || (a != b && a != c && b != c) {
+            return true
+        }
+        return false
     }
-    return false
 }
