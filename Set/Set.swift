@@ -13,11 +13,11 @@ struct Set {
     private let maxChosenCards = 3
     private let startingNumOfCards = 12
     private(set) var chosenCardIndices = [Int]()
-    private(set) var score = Score()
     private(set) var matched = false
     private(set) var successfulMatch = false
     private(set) var deck = SetCardDeck()
     private(set) var drawnCards = [SetCard]()
+    private(set) var statistics = SetGameStatistics()
 
     mutating func chooseCard(at index: Int) {
         assert(drawnCards.indices.contains(index), "Concentration.chooseCard(at: \(index)): chosen index not in the cards")
@@ -41,7 +41,7 @@ struct Set {
                 // Checks if cards match successfully and applies a score bonus or penalty.
                 if [drawnCards[chosenCardIndices[0]], drawnCards[chosenCardIndices[1]], drawnCards[chosenCardIndices[2]]].successfulMatch {
                     successfulMatch = true
-                    score.increaseScore(by: 5)
+                    statistics.incrementScore(by: 5)
                     
                     // Sort the indices so the cards are removed from the deck in descending order. This ensures the indices of the cards that need to be removed don't change during the for loop.
                     chosenCardIndices.sort(by: >)
@@ -55,7 +55,7 @@ struct Set {
                         draw(amount: 3)
                     }
                 } else {
-                    score.decreaseScore(by: 10)
+                    statistics.decrementScore(by: 10)
                     successfulMatch = false
                 }
             } else if chosenCardIndices.count > maxChosenCards {
@@ -70,7 +70,7 @@ struct Set {
     
     mutating func startNewGame() {
         // Reset any variables that might have been modified during a game
-        score.resetScore()
+        statistics.reset()
         matched = false
         successfulMatch = false
         chosenCardIndices.removeAll()

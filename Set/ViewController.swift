@@ -99,7 +99,7 @@ class ViewController: UIViewController {
         }
         
         // Update labels with score and card count.
-        scoreLabel.text = "SCORE: \(game.score.value)"
+        scoreLabel.text = "SCORE: \(game.statistics.score)"
         remainingCardsButton.setTitle("\(game.deck.cards.count)", for: UIControl.State.normal)
         
         // Disables addCardsButton if there are not enough cards in the deck or if there are 24 drawn cards.

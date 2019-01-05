@@ -11,9 +11,9 @@ import Foundation
 struct SetCardDeck: CustomStringConvertible
 {
     var description: String {
-        var description = ""
+        var description = "There are \(cards.count) cards in the deck."
         for (index, card) in cards.enumerated() {
-            description.append("Card " + String(index + 1) + ": " + card.description + "\n")
+            description.append("\nCard " + String(index + 1) + ": " + card.description)
         }
         return description
     }
