@@ -37,7 +37,7 @@ class ViewController: UIViewController {
     
     // Reveals a possible match to the player.
     @IBAction func showSetButton(_ sender: UIButton) {
-        if let setIndices = game.drawnCards.retrieveSetIndices {
+        if let setIndices = game.hand.cards.retrieveSetIndices {
             for index in setIndices {
                 cardButtons[index].layer.borderWidth = 3.0
                 cardButtons[index].layer.borderColor = UIColor.green.cgColor
@@ -73,12 +73,12 @@ class ViewController: UIViewController {
             let button = cardButtons[index]
             
             // Only enable the button if it is needed to represent a drawn card
-            if index >= game.drawnCards.count {
+            if index >= game.hand.cards.count {
                 disableCardButton(button: button)
             } else {
                 enableCardButton(button: button)
                 button.layer.borderColor = UIColor.black.cgColor
-                let card = game.drawnCards[index]
+                let card = game.hand.cards[index]
                 assignCardFace(to: button, from: card)
                 
                 // Gives selected cards a border.
@@ -103,7 +103,7 @@ class ViewController: UIViewController {
         remainingCardsButton.setTitle("\(game.deck.cards.count)", for: UIControl.State.normal)
         
         // Disables addCardsButton if there are not enough cards in the deck or if there are 24 drawn cards.
-        if game.deck.cards.count < 1 || game.drawnCards.count == game.maxDrawnCards{
+        if game.deck.cards.count < 1 || game.hand.cards.count == game.maxDrawnCards{
             addCardsButton.isEnabled = false
             addCardsButton.alpha = 0.15
         } else {

@@ -17,7 +17,7 @@ struct Set
     }
     
     private struct CardLimits {
-        static let maxChosenCards = 3
+        static let maxChosenCards = 3   // Matching logic only considers 3 cards as a match so only change this from 3 if you're making Super Set or something.
         static let cardsTakenPerDraw = 3
         static let startingNumOfCards = 12
     }
@@ -26,34 +26,14 @@ struct Set
     let maxDrawnCards = 24
     
     private(set) var deck = SetCardDeck()
-    private(set) var drawnCards = [SetCard]()
+    private(set) var hand = SetCardHand()
     private(set) var chosenCardIndices = [Int]()
     private(set) var statistics = SetGameStatistics()
     private(set) var successfulMatchMade = false
-    private(set) var matchMade = false {
-        didSet {
-            if matchMade == true {
-                if [drawnCards[chosenCardIndices[0]], drawnCards[chosenCardIndices[1]], drawnCards[chosenCardIndices[2]]].successfulMatch {
-                    successfulMatchMade = true
-                    removeIndicesFromCards(indices: &chosenCardIndices, cards: &drawnCards)
-                    statistics.adjustScore(by: ScoreChange.onSuccessfulMatch)
-                    statistics.successfulMatchMade(is: true)
-                    
-                    // Replaces matched cards.
-                    if deck.cards.count >= CardLimits.cardsTakenPerDraw {
-                        draw(amount: CardLimits.cardsTakenPerDraw)
-                    }
-                } else {
-                    successfulMatchMade = false
-                    statistics.adjustScore(by: ScoreChange.onUnsuccessfulMatch)
-                    statistics.successfulMatchMade(is: false)
-                }
-            }
-        }
-    }
+    private(set) var matchMade = false
 
     mutating func chooseCard(at index: Int) {
-        assert(drawnCards.indices.contains(index), "Concentration.chooseCard(at: \(index)): chosen index not in the cards")
+        assert(hand.cards.indices.contains(index), "Concentration.chooseCard(at: \(index)): chosen index not in the cards")
         outerLoop: if chosenCardIndices.isEmpty {
             chosenCardIndices.append(index)
             matchMade = false
@@ -70,6 +50,22 @@ struct Set
             // Checks if a match occurs.
             if chosenCardIndices.count == CardLimits.maxChosenCards {
                 matchMade = true
+                if [hand.cards[chosenCardIndices[0]], hand.cards[chosenCardIndices[1]], hand.cards[chosenCardIndices[2]]].successfulMatch {
+                    successfulMatchMade = true
+                    hand.discardCardsAtIndices(chosenCardIndices)
+                    chosenCardIndices.removeAll()
+                    statistics.adjustScore(by: ScoreChange.onSuccessfulMatch)
+                    statistics.successfulMatchMade(is: true)
+                    
+                    // Replaces matched cards.
+                    if deck.cards.count >= CardLimits.cardsTakenPerDraw {
+                        draw(amount: CardLimits.cardsTakenPerDraw)
+                    }
+                } else {
+                    successfulMatchMade = false
+                    statistics.adjustScore(by: ScoreChange.onUnsuccessfulMatch)
+                    statistics.successfulMatchMade(is: false)
+                }
             } else if chosenCardIndices.count > CardLimits.maxChosenCards {
                 // Remove currently selected cards if the maximum allowed has already been selected before selecting a new one.
                 chosenCardIndices.removeSubrange(0..<chosenCardIndices.count - 1)
@@ -77,8 +73,9 @@ struct Set
         }
     }
     
+    //TODO: Do something about this function? Using it to let the view controller draw cards.
     mutating func draw(amount: Int) {
-        drawnCards.append(contentsOf: deck.draw(amount: amount))
+        hand.cards.append(contentsOf: deck.draw(amount: amount))
     }
     
     mutating func startNewGame() {
@@ -90,18 +87,8 @@ struct Set
         
         // Set up a deck and draw cards.
         deck.createNewDeck()
-        drawnCards.removeAll()
+        hand.cards.removeAll()
         draw(amount: CardLimits.startingNumOfCards)
-    }
-    
-    private func removeIndicesFromCards(indices: inout [Int], cards: inout [SetCard]) {
-        // Sort the indices so the cards are removed from the deck in descending order. This ensures the indices of the cards that need to be removed don't change during the for loop.
-        indices.sort(by: >)
-        for index in indices {
-            assert(cards.indices.contains(index), "Concentration.chooseCard(at: \(index)): chosen index not in the cards")
-            cards.remove(at: index)
-        }
-        indices.removeAll()
     }
     
     init() {

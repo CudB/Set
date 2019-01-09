@@ -8,28 +8,24 @@
 
 import Foundation
 
-struct SetCardDeck: CustomStringConvertible
+class SetCardDeck: CustomStringConvertible
 {
     var description: String {
-        var description = "There are \(cards.count) cards in the deck."
+        var description = "There are \(cards.count) cards."
         for (index, card) in cards.enumerated() {
             description.append("\nCard " + String(index + 1) + ": " + card.description)
         }
         return description
     }
     
-    private(set) var cards = [SetCard]()
+    var cards = [SetCard]()
     
-    init() {
-        createNewDeck()
-    }
-    
-    mutating func draw() -> SetCard {
+    func draw() -> SetCard {
         assert(cards.count > 0, "There are no cards to draw.")
         return cards.removeFirst()
     }
     
-    mutating func draw(amount: Int) -> [SetCard] {
+    func draw(amount: Int) -> [SetCard] {
         assert(cards.count >= amount, "There are not enough cards to draw.")
         var drawnCards = [SetCard]()
         for _ in 0..<amount {
@@ -38,7 +34,7 @@ struct SetCardDeck: CustomStringConvertible
         return drawnCards
     }
     
-    mutating func shuffle() {
+    func shuffle() {
         var sortedCards = [SetCard]()
         for _ in 1...cards.count {
             sortedCards += [cards.remove(at: cards.count.arc4random)]
@@ -46,7 +42,7 @@ struct SetCardDeck: CustomStringConvertible
         cards = sortedCards
     }
     
-    mutating func createNewDeck() {
+    func createNewDeck() {
         cards.removeAll()
         for number in SetCard.Number.allCases {
             for symbol in SetCard.Symbol.allCases {
@@ -58,5 +54,9 @@ struct SetCardDeck: CustomStringConvertible
             }
         }
         shuffle()
+    }
+    
+    init() {
+        createNewDeck()
     }
 }
