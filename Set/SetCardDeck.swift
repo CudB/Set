@@ -21,15 +21,7 @@ struct SetCardDeck: CustomStringConvertible
     private(set) var cards = [SetCard]()
     
     init() {
-        for number in SetCard.Number.allCases {
-            for symbol in SetCard.Symbol.allCases {
-                for color in SetCard.Color.allCases {
-                    for shading in SetCard.Shading.allCases {
-                        cards.append(SetCard(number: number, symbol: symbol, color: color, shading: shading))
-                    }
-                }
-            }
-        }
+        createNewDeck()
     }
     
     mutating func draw() -> SetCard {
@@ -52,5 +44,19 @@ struct SetCardDeck: CustomStringConvertible
             sortedCards += [cards.remove(at: cards.count.arc4random)]
         }
         cards = sortedCards
+    }
+    
+    mutating func createNewDeck() {
+        cards.removeAll()
+        for number in SetCard.Number.allCases {
+            for symbol in SetCard.Symbol.allCases {
+                for color in SetCard.Color.allCases {
+                    for shading in SetCard.Shading.allCases {
+                        cards.append(SetCard(number: number, symbol: symbol, color: color, shading: shading))
+                    }
+                }
+            }
+        }
+        shuffle()
     }
 }

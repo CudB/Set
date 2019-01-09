@@ -84,11 +84,11 @@ class ViewController: UIViewController {
                 // Gives selected cards a border.
                 for chosenIndex in game.chosenCardIndices {
                     if chosenIndex == index {
-                        if !game.matched {
+                        if !game.matchMade {
                             // Border for selected cards.
                             button.layer.borderWidth = 3.0
                             button.layer.borderColor = UIColor.blue.cgColor
-                        } else if !game.successfulMatch {
+                        } else if !game.successfulMatchMade {
                             // Border for unsuccessful match.
                             button.layer.borderWidth = 3.0
                             button.layer.borderColor = UIColor.red.cgColor

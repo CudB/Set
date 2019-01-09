@@ -10,16 +10,24 @@ import Foundation
 
 struct SetGameStatistics: CustomStringConvertible
 {
-    var description: String {
-        return ""
-    }
-    
     private(set) var score = 0
     private(set) var scoreAdded = 0
     private(set) var scoreDeducted = 0
     private(set) var matchesMade = 0
     private(set) var successfulMatches = 0
     private(set) var unsuccessfulMatches = 0
+    
+    var description: String {
+        var description = ""
+        description.append("Game statistics for the current game of Set:")
+        description.append("\nTotal Score: " + String(score))
+        description.append("\nScore Added: " + String(scoreAdded))
+        description.append("\nScore Deducted: " + String(scoreDeducted))
+        description.append("\nTotal Matches Made: " + String(matchesMade))
+        description.append("\nSuccessful Matches Made: " + String(successfulMatches))
+        description.append("\nUnsuccessful Matches Made: " + String(unsuccessfulMatches))
+        return description
+    }
     
     mutating func reset() {
         score = 0
@@ -30,23 +38,21 @@ struct SetGameStatistics: CustomStringConvertible
         unsuccessfulMatches = 0
     }
     
-    mutating func incrementScore(by amount: Int) {
-        scoreAdded += amount
+    mutating func adjustScore(by amount: Int) {
+        if amount > 0 {
+            scoreAdded += amount
+        } else {
+            scoreDeducted += amount
+        }
         score += amount
     }
     
-    mutating func decrementScore(by amount: Int) {
-        scoreDeducted += amount
-        score -= amount
-    }
-    
-    mutating func addSuccessfulMatch() {
+    mutating func successfulMatchMade(is successful: Bool) {
+        if successful {
+            successfulMatches += 1
+        } else {
+            unsuccessfulMatches += 1
+        }
         matchesMade += 1
-        successfulMatches += 1
-    }
-    
-    mutating func addUnsuccessfulMatch() {
-        matchesMade += 1
-        unsuccessfulMatches += 1
     }
 }
