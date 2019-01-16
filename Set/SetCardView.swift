@@ -8,10 +8,15 @@
 
 import UIKit
 
+@IBDesignable
 class SetCardView: UIView {
     
+    var type = SetCard.Symbol.squiggle
+    var color = SetCard.Color.blue
+    var number = SetCard.Number.three
+    var shading = SetCard.Shading.striped
+    
     override func draw(_ rect: CGRect) {
-        
         // Create the card boundaries.
         let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius)
         roundedRect.addClip()
@@ -23,12 +28,112 @@ class SetCardView: UIView {
         var grid = Grid(layout: Grid.Layout.dimensions(rowCount: 3, columnCount: 1), frame: gridFrame)
         
         // Draw symbol(s) within the grid.
-        for i in 0..<grid.cellCount { drawSymbol(type: SetCard.Symbol.squiggle, color: SetCard.Color.blue, shading: SetCard.Shading.solid, inGrid: grid, inCellNumber: i) }
+        for i in 0..<grid.cellCount {
+            if let context = UIGraphicsGetCurrentContext() {
+                context.saveGState()
+                drawSymbol(type: type, color: color, shading: shading, inGrid: grid, inCellNumber: i)
+                context.restoreGState()
+            }
+        }
     }
     
-}
-
-extension SetCardView {
+    private func drawSymbol(type: SetCard.Symbol, color: SetCard.Color, shading: SetCard.Shading, inGrid grid: Grid, inCellNumber cell: Int) {
+        
+        let symbolContainer = CGRect(origin: calculateSymbolOrigin(within: grid, cell: cell), size: calculateSymbolSize(within: grid))
+        
+        var symbolColor: UIColor
+        var symbolPath: UIBezierPath
+        var shadingPath: UIBezierPath
+        
+        
+        switch color {
+        case .red:
+            symbolColor = UIColor.red
+        case .green:
+            symbolColor = UIColor.green
+        case .blue:
+            symbolColor = UIColor.blue
+        }
+        
+        switch type {
+        case .oval:
+            symbolPath = drawOval(in: symbolContainer)
+        case .diamond:
+            symbolPath = drawDiamond(in: symbolContainer)
+        case .squiggle:
+            symbolPath = drawSquiggle(in: symbolContainer)
+        }
+        
+        switch shading {
+        case .open:
+            symbolColor.setStroke()
+            symbolPath.stroke()
+        case .solid:
+            symbolColor.setFill()
+            symbolPath.fill()
+        case .striped:
+            symbolColor.setStroke()
+            symbolPath.stroke()
+            shadingPath = drawStripes(in: symbolContainer, for: symbolPath)
+            shadingPath.stroke()
+            symbolPath.addClip()
+            
+        }
+    }
+    
+    private func drawOval(in rect: CGRect) -> UIBezierPath {
+        return UIBezierPath(ovalIn: rect)
+    }
+    
+    private func drawDiamond(in rect: CGRect) -> UIBezierPath {
+        let diamond = UIBezierPath()
+        diamond.move(to: rect.origin.offsetBy(dx: rect.width/2, dy: 0))
+        diamond.addLine(to: diamond.currentPoint.offsetBy(dx: rect.width/2, dy: rect.height/2))
+        diamond.addLine(to: diamond.currentPoint.offsetBy(dx: -rect.width/2, dy: rect.height/2))
+        diamond.addLine(to: diamond.currentPoint.offsetBy(dx: -rect.width/2, dy: -rect.height/2))
+        return diamond
+    }
+    
+    private func drawSquiggle(in rect: CGRect) -> UIBezierPath {
+        // Drawing this curve was the most asinine thing I have ever done. I'm sure there's a clever way to figure out the numbers for these curves and I've just wasted my time.
+        let squiggle = UIBezierPath()
+        squiggle.move(to: rect.origin.offsetBy(dx: rect.width * 0.15, dy: rect.height * 0.87))
+        squiggle.addCurve(
+            to: rect.origin.offsetBy(dx: rect.width, dy: rect.height * 0.5),
+            controlPoint1: rect.origin.offsetBy(dx: rect.width * 0.5, dy: rect.height * 0.4),
+            controlPoint2: rect.origin.offsetBy(dx: rect.width * 0.75, dy: rect.height * 1.3)
+        )
+        squiggle.addCurve(
+            to: rect.origin.offsetBy(dx: rect.width * 0.85, dy: rect.height * 0.1),
+            controlPoint1: rect.origin.offsetBy(dx: rect.width * 1.1, dy: rect.height * 0.07),
+            controlPoint2: rect.origin.offsetBy(dx: rect.width * 0.9, dy: rect.height * -0.03)
+        )
+        squiggle.addCurve(
+            to: rect.origin.offsetBy(dx: 0, dy: rect.height * 0.5),
+            controlPoint1: rect.origin.offsetBy(dx: rect.width * 0.5, dy: rect.height * 0.6),
+            controlPoint2: rect.origin.offsetBy(dx: rect.width * 0.2, dy: rect.height * -0.4)
+        )
+        squiggle.addCurve(
+            to: rect.origin.offsetBy(dx: rect.width * 0.15, dy: rect.height * 0.87),
+            controlPoint1: rect.origin.offsetBy(dx: rect.width * -0.1, dy: rect.height * 0.9),
+            controlPoint2: rect.origin.offsetBy(dx: rect.width * 0.1, dy: rect.height * 0.95)
+        )
+        return squiggle
+    }
+    
+    private func drawStripes(in rect: CGRect, for symbol: UIBezierPath) -> UIBezierPath {
+        let stripes = UIBezierPath()
+        stripes.move(to: rect.origin)
+        for x in stride(from: floor(rect.origin.x - 10), to: floor(rect.origin.x + rect.width + 10), by: 1) {
+            if x.truncatingRemainder(dividingBy: 4) == 0 {
+                stripes.move(to: CGPoint(x: CGFloat(x), y: rect.origin.y))
+                stripes.addLine(to: CGPoint(x: CGFloat(x), y: rect.origin.y + rect.height))
+            }
+        }
+        symbol.addClip()
+        return stripes
+    }
+    
     private struct SizeRatio {
         static let cornerRadiusToBoundsHeight: CGFloat = 0.06
         static let gridSizeToBoundsSize: CGFloat = 0.6
@@ -51,79 +156,6 @@ extension SetCardView {
     private func calculateSymbolSize(within grid: Grid) -> CGSize {
         return CGSize(width: grid.cellSize.width * SizeRatio.symbolSizeToGridCellSize, height: grid.cellSize.height * SizeRatio.symbolSizeToGridCellSize)
     }
-    
-    private func drawSymbol(type: SetCard.Symbol, color: SetCard.Color, shading: SetCard.Shading, inGrid grid: Grid, inCellNumber cell: Int) {
-        let symbolContainer = CGRect(origin: calculateSymbolOrigin(within: grid, cell: cell), size: calculateSymbolSize(within: grid))
-        
-        var symbolColor: UIColor
-        
-        
-        switch color {
-        case .red:
-            symbolColor = UIColor.red
-        case .green:
-            symbolColor = UIColor.green
-        case .blue:
-            symbolColor = UIColor.blue
-        }
-        
-        symbolColor.setFill()
-        
-        switch type {
-        case .oval:
-            drawOval(in: symbolContainer)
-        case .diamond:
-            drawDiamond(in: symbolContainer)
-        case .squiggle:
-            drawSquiggle(in: symbolContainer)
-        }
-    }
-    
-    private func drawOval(in rect: CGRect) {
-        let oval = UIBezierPath(ovalIn: rect)
-        oval.fill()
-    }
-    
-    private func drawDiamond(in rect: CGRect) {
-        let diamond = UIBezierPath()
-        diamond.move(to: rect.origin.offsetBy(dx: rect.width/2, dy: 0))
-        diamond.addLine(to: diamond.currentPoint.offsetBy(dx: rect.width/2, dy: rect.height/2))
-        diamond.addLine(to: diamond.currentPoint.offsetBy(dx: -rect.width/2, dy: rect.height/2))
-        diamond.addLine(to: diamond.currentPoint.offsetBy(dx: -rect.width/2, dy: -rect.height/2))
-        diamond.fill()
-    }
-    
-    private func drawSquiggle(in rect: CGRect) {
-        // Drawing this curve was the most asinine thing I have ever done. I'm sure there's a clever way to figure out the numbers for these curves and I've just wasted my time.
-        let squiggle = UIBezierPath()
-        
-        squiggle.move(to: rect.origin.offsetBy(dx: rect.width * 0.15, dy: rect.height * 0.87))
-        
-        squiggle.addCurve(
-            to: rect.origin.offsetBy(dx: rect.width, dy: rect.height * 0.5),
-            controlPoint1: rect.origin.offsetBy(dx: rect.width * 0.50, dy: rect.height * 0.4),
-            controlPoint2: rect.origin.offsetBy(dx: rect.width * 0.75, dy: rect.height * 1.30)
-        )
-        squiggle.addCurve(
-            to: rect.origin.offsetBy(dx: rect.width * 0.85, dy: rect.height * 0.1),
-            controlPoint1: rect.origin.offsetBy(dx: rect.width * 1.1, dy: rect.height * 0.07),
-            controlPoint2: rect.origin.offsetBy(dx: rect.width * 0.9, dy: rect.height * -0.03)
-        )
-        squiggle.addCurve(
-            to: rect.origin.offsetBy(dx: 0, dy: rect.height * 0.5),
-            controlPoint1: rect.origin.offsetBy(dx: rect.width * 0.50, dy: rect.height * 0.6),
-            controlPoint2: rect.origin.offsetBy(dx: rect.width * 0.2, dy: rect.height * -0.40)
-        )
-        squiggle.addCurve(
-            to: rect.origin.offsetBy(dx: rect.width * 0.15, dy: rect.height * 0.87),
-            controlPoint1: rect.origin.offsetBy(dx: rect.width * -0.1, dy: rect.height * 0.9),
-            controlPoint2: rect.origin.offsetBy(dx: rect.width * 0.1, dy: rect.height * 0.95)
-        )
-        
-        squiggle.fill()
-    }
-    
-    
 }
 
 extension CGPoint {
