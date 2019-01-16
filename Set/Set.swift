@@ -17,9 +17,9 @@ struct Set
     }
     
     private struct CardLimits {
-        static let maxChosenCards = 3   // Matching logic only considers 3 cards as a match so only change this from 3 if you're making Super Set or something.
+        static let maxChosenCards = 3
         static let cardsTakenPerDraw = 3
-        static let startingNumOfCards = 12
+        static let startingNumOfCards = 1
     }
     
     //TODO: to be removed once scalable card views are implemented.
@@ -50,6 +50,8 @@ struct Set
             // Checks if a match occurs.
             if chosenCardIndices.count == CardLimits.maxChosenCards {
                 matchMade = true
+                
+                // Check for successful match.
                 if [hand.cards[chosenCardIndices[0]], hand.cards[chosenCardIndices[1]], hand.cards[chosenCardIndices[2]]].successfulMatch {
                     successfulMatchMade = true
                     hand.discardCardsAtIndices(chosenCardIndices)

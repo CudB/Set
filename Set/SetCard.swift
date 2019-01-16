@@ -29,9 +29,9 @@ struct SetCard: CustomStringConvertible
     }
     
     enum Symbol: String, CaseIterable, CustomStringConvertible {
-        case triangle = "▲"
-        case circle = "●"
-        case square = "■"
+        case oval = "oval"
+        case diamond = "diamond"
+        case squiggle = "squiggle"
         
         var description: String { return rawValue }
     }

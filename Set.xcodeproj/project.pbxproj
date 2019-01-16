@@ -13,6 +13,7 @@
 		A1642DFF21C96EDB0083E3CD /* Array+FindSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1642DFE21C96EDB0083E3CD /* Array+FindSet.swift */; };
 		A1642E0121C971390083E3CD /* Array+CheckThreeCardsForSetMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1642E0021C971390083E3CD /* Array+CheckThreeCardsForSetMatch.swift */; };
 		A1642E0321DE798A0083E3CD /* SetCardDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1642E0221DE798A0083E3CD /* SetCardDeck.swift */; };
+		A18B2E4321E7BCFF003A0657 /* SetCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B2E4221E7BCFF003A0657 /* SetCardView.swift */; };
 		A19D349721C02A5D0035B549 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19D349621C02A5D0035B549 /* AppDelegate.swift */; };
 		A19D349921C02A5D0035B549 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19D349821C02A5D0035B549 /* ViewController.swift */; };
 		A19D349C21C02A5E0035B549 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A19D349A21C02A5E0035B549 /* Main.storyboard */; };
@@ -30,6 +31,7 @@
 		A1642DFE21C96EDB0083E3CD /* Array+FindSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+FindSet.swift"; sourceTree = "<group>"; };
 		A1642E0021C971390083E3CD /* Array+CheckThreeCardsForSetMatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+CheckThreeCardsForSetMatch.swift"; sourceTree = "<group>"; };
 		A1642E0221DE798A0083E3CD /* SetCardDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardDeck.swift; sourceTree = "<group>"; };
+		A18B2E4221E7BCFF003A0657 /* SetCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardView.swift; sourceTree = "<group>"; };
 		A19D349321C02A5D0035B549 /* Set.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Set.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A19D349621C02A5D0035B549 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A19D349821C02A5D0035B549 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				A19D34A821C02D490035B549 /* Supporting Files */,
 				A19D349821C02A5D0035B549 /* ViewController.swift */,
 				A19D349A21C02A5E0035B549 /* Main.storyboard */,
+				A18B2E4221E7BCFF003A0657 /* SetCardView.swift */,
 				A19D34AD21C185100035B549 /* SetCard.swift */,
 				A19D34AB21C180370035B549 /* Set.swift */,
 				A1642E0221DE798A0083E3CD /* SetCardDeck.swift */,
@@ -179,6 +182,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A19D34AE21C185100035B549 /* SetCard.swift in Sources */,
+				A18B2E4321E7BCFF003A0657 /* SetCardView.swift in Sources */,
 				A1642DFF21C96EDB0083E3CD /* Array+FindSet.swift in Sources */,
 				A115BD0821E68229009DCEDD /* SetCardHand.swift in Sources */,
 				A115BD0421E169DE009DCEDD /* SetGameStatistics.swift in Sources */,
