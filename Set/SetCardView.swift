@@ -11,10 +11,10 @@ import UIKit
 @IBDesignable
 class SetCardView: UIView {
     
-    var type = SetCard.Symbol.squiggle
+    var type = SetCard.Symbol.oval
     var color = SetCard.Color.blue
-    var number = SetCard.Number.three
-    var shading = SetCard.Shading.striped
+    var number = SetCard.Number.two
+    var shading = SetCard.Shading.open
     
     override func draw(_ rect: CGRect) {
         // Create the card boundaries.
@@ -23,61 +23,72 @@ class SetCardView: UIView {
         UIColor.white.setFill()
         roundedRect.fill()
         
-        // Create a grid within the card.
-        let gridFrame = CGRect(origin: gridFrameOrigin, size: gridFrameSize)
-        var grid = Grid(layout: Grid.Layout.dimensions(rowCount: 3, columnCount: 1), frame: gridFrame)
-        
-        // Draw symbol(s) within the grid.
-        for i in 0..<grid.cellCount {
-            if let context = UIGraphicsGetCurrentContext() {
-                context.saveGState()
-                drawSymbol(type: type, color: color, shading: shading, inGrid: grid, inCellNumber: i)
-                context.restoreGState()
-            }
-        }
+        // Create the face of the card and fit it to the frame.
+        let cardFaceFrame = CGRect(origin: cardFaceFrameOrigin, size: cardFaceFrameSize)
+        drawCardFace(type: type, number: number, color: color, shading: shading, inFrame: cardFaceFrame)
     }
     
-    private func drawSymbol(type: SetCard.Symbol, color: SetCard.Color, shading: SetCard.Shading, inGrid grid: Grid, inCellNumber cell: Int) {
+    private func drawCardFace(type: SetCard.Symbol, number: SetCard.Number, color: SetCard.Color, shading: SetCard.Shading, inFrame frame: CGRect) {
         
-        let symbolContainer = CGRect(origin: calculateSymbolOrigin(within: grid, cell: cell), size: calculateSymbolSize(within: grid))
-        
-        var symbolColor: UIColor
-        var symbolPath: UIBezierPath
-        var shadingPath: UIBezierPath
-        
+        var drawFunc: (CGRect) -> UIBezierPath
+        let symbolSize = calculateSymbolSize(within: frame)
         
         switch color {
         case .red:
-            symbolColor = UIColor.red
+            UIColor.red.setFill()
+            UIColor.red.setStroke()
         case .green:
-            symbolColor = UIColor.green
+            UIColor.green.setFill()
+            UIColor.green.setStroke()
         case .blue:
-            symbolColor = UIColor.blue
+            UIColor.blue.setFill()
+            UIColor.blue.setStroke()
         }
         
         switch type {
         case .oval:
-            symbolPath = drawOval(in: symbolContainer)
+            drawFunc = drawOval
         case .diamond:
-            symbolPath = drawDiamond(in: symbolContainer)
+            drawFunc = drawDiamond
         case .squiggle:
-            symbolPath = drawSquiggle(in: symbolContainer)
+            drawFunc = drawSquiggle
         }
         
+        if let context = UIGraphicsGetCurrentContext() {
+            switch number {
+            case .one:
+                let symbolFrame = CGRect(origin: frame.origin.offsetBy(dx: 0, dy: frame.height/3), size: symbolSize)
+                drawSymbol(with: drawFunc, shading: shading, frame: symbolFrame)
+            case .two:
+                var symbolFrame = CGRect(origin: frame.origin.offsetBy(dx: 0, dy: frame.height/6), size: symbolSize)
+                context.saveGState()
+                drawSymbol(with: drawFunc, shading: shading, frame: symbolFrame)
+                context.restoreGState()
+                symbolFrame.origin = frame.origin.offsetBy(dx: 0, dy: frame.height/2)
+                drawSymbol(with: drawFunc, shading: shading, frame: symbolFrame)
+            case .three:
+                var symbolFrame = CGRect(origin: frame.origin, size: symbolSize)
+                for dy in stride(from: 0, to: frame.height, by: frame.height/3) {
+                    symbolFrame.origin = frame.origin.offsetBy(dx: 0, dy: dy)
+                    context.saveGState()
+                    drawSymbol(with: drawFunc, shading: shading, frame: symbolFrame)
+                    context.restoreGState()
+                }
+            }
+        }
+    }
+    
+    private func drawSymbol(with drawFunc: (CGRect) -> UIBezierPath, shading: SetCard.Shading, frame: CGRect) {
+        let path = drawFunc(frame)
         switch shading {
         case .open:
-            symbolColor.setStroke()
-            symbolPath.stroke()
+            path.stroke()
         case .solid:
-            symbolColor.setFill()
-            symbolPath.fill()
+            path.fill()
         case .striped:
-            symbolColor.setStroke()
-            symbolPath.stroke()
-            shadingPath = drawStripes(in: symbolContainer, for: symbolPath)
-            shadingPath.stroke()
-            symbolPath.addClip()
-            
+            path.stroke()
+            path.addClip()
+            drawStripes(in: frame, for: path).stroke()
         }
     }
     
@@ -91,6 +102,7 @@ class SetCardView: UIView {
         diamond.addLine(to: diamond.currentPoint.offsetBy(dx: rect.width/2, dy: rect.height/2))
         diamond.addLine(to: diamond.currentPoint.offsetBy(dx: -rect.width/2, dy: rect.height/2))
         diamond.addLine(to: diamond.currentPoint.offsetBy(dx: -rect.width/2, dy: -rect.height/2))
+        diamond.addLine(to: diamond.currentPoint.offsetBy(dx: rect.width/2, dy: -rect.height/2))
         return diamond
     }
     
@@ -136,25 +148,21 @@ class SetCardView: UIView {
     
     private struct SizeRatio {
         static let cornerRadiusToBoundsHeight: CGFloat = 0.06
-        static let gridSizeToBoundsSize: CGFloat = 0.6
+        static let cardFaceFrameWidthToBoundsWidth: CGFloat = 0.55
+        static let cardFaceFrameHeightToBoundsHeight: CGFloat = 0.70
         static let symbolSizeToGridCellSize: CGFloat = 0.8
     }
     private var cornerRadius: CGFloat {
         return bounds.size.height * SizeRatio.cornerRadiusToBoundsHeight
     }
-    private var gridFrameOrigin: CGPoint {
-        return CGPoint(x: (bounds.size.width - bounds.size.width * SizeRatio.gridSizeToBoundsSize)/2.0, y: (bounds.size.height - bounds.size.height * SizeRatio.gridSizeToBoundsSize)/2.0)
+    private var cardFaceFrameOrigin: CGPoint {
+        return CGPoint(x: (bounds.size.width - bounds.size.width * SizeRatio.cardFaceFrameWidthToBoundsWidth)/2.0, y: (bounds.size.height - bounds.size.height * SizeRatio.cardFaceFrameHeightToBoundsHeight)/2.0)
     }
-    private var gridFrameSize: CGSize {
-        return CGSize(width: bounds.width * SizeRatio.gridSizeToBoundsSize, height: bounds.height * SizeRatio.gridSizeToBoundsSize)
+    private var cardFaceFrameSize: CGSize {
+        return CGSize(width: bounds.width * SizeRatio.cardFaceFrameWidthToBoundsWidth, height: bounds.height * SizeRatio.cardFaceFrameHeightToBoundsHeight)
     }
-    
-    private func calculateSymbolOrigin(within grid: Grid, cell: Int) -> CGPoint {
-        return CGPoint(x: grid.frame.origin.x + (grid.cellSize.width - grid.cellSize.width * SizeRatio.symbolSizeToGridCellSize)/2.0, y: grid.frame.origin.y + (grid.cellSize.height - grid.cellSize.height * SizeRatio.symbolSizeToGridCellSize)/2.0 + grid.cellSize.height * CGFloat(cell))
-    }
-    
-    private func calculateSymbolSize(within grid: Grid) -> CGSize {
-        return CGSize(width: grid.cellSize.width * SizeRatio.symbolSizeToGridCellSize, height: grid.cellSize.height * SizeRatio.symbolSizeToGridCellSize)
+    private func calculateSymbolSize(within frame: CGRect) -> CGSize {
+        return CGSize(width: frame.width, height: frame.height/3.75)
     }
 }
 
