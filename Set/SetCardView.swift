@@ -67,14 +67,14 @@ extension SetCardView {
             symbolColor = UIColor.blue
         }
         
+        symbolColor.setFill()
+        
         switch type {
         case .oval:
-            symbolColor.setFill()
             drawOval(in: symbolContainer)
         case .diamond:
-            break
+            drawDiamond(in: symbolContainer)
         case .squiggle:
-            symbolColor.setStroke()
             drawSquiggle(in: symbolContainer)
         }
     }
@@ -82,6 +82,15 @@ extension SetCardView {
     private func drawOval(in rect: CGRect) {
         let oval = UIBezierPath(ovalIn: rect)
         oval.fill()
+    }
+    
+    private func drawDiamond(in rect: CGRect) {
+        let diamond = UIBezierPath()
+        diamond.move(to: rect.origin.offsetBy(dx: rect.width/2, dy: 0))
+        diamond.addLine(to: diamond.currentPoint.offsetBy(dx: rect.width/2, dy: rect.height/2))
+        diamond.addLine(to: diamond.currentPoint.offsetBy(dx: -rect.width/2, dy: rect.height/2))
+        diamond.addLine(to: diamond.currentPoint.offsetBy(dx: -rect.width/2, dy: -rect.height/2))
+        diamond.fill()
     }
     
     private func drawSquiggle(in rect: CGRect) {
@@ -111,7 +120,7 @@ extension SetCardView {
             controlPoint2: rect.origin.offsetBy(dx: rect.width * 0.1, dy: rect.height * 0.95)
         )
         
-        squiggle.stroke()
+        squiggle.fill()
     }
     
     
