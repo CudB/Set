@@ -11,10 +11,22 @@ import UIKit
 @IBDesignable
 class SetCardView: UIView {
     
-    var type = SetCard.Symbol.oval
-    var color = SetCard.Color.blue
-    var number = SetCard.Number.two
-    var shading = SetCard.Shading.open
+    var type = SetCard.Symbol.diamond { didSet { setNeedsDisplay(); setNeedsLayout() } }
+    var color = SetCard.Color.blue { didSet { setNeedsDisplay(); setNeedsLayout() } }
+    var number = SetCard.Number.one { didSet { setNeedsDisplay(); setNeedsLayout() } }
+    var shading = SetCard.Shading.solid { didSet { setNeedsDisplay(); setNeedsLayout() } }
+    
+    init(type: SetCard.Symbol, color: SetCard.Color, number: SetCard.Number, shading: SetCard.Shading, frame: CGRect) {
+        super.init(frame: frame)
+        self.type = type
+        self.color = color
+        self.number = number
+        self.shading = shading
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func draw(_ rect: CGRect) {
         // Create the card boundaries.
@@ -54,26 +66,20 @@ class SetCardView: UIView {
             drawFunc = drawSquiggle
         }
         
-        if let context = UIGraphicsGetCurrentContext() {
-            switch number {
-            case .one:
-                let symbolFrame = CGRect(origin: frame.origin.offsetBy(dx: 0, dy: frame.height/3), size: symbolSize)
+        switch number {
+        case .one:
+            let symbolFrame = CGRect(origin: frame.origin.offsetBy(dx: 0, dy: frame.height/3), size: symbolSize)
+            drawSymbol(with: drawFunc, shading: shading, frame: symbolFrame)
+        case .two:
+            var symbolFrame = CGRect(origin: frame.origin.offsetBy(dx: 0, dy: frame.height/6), size: symbolSize)
+            drawSymbol(with: drawFunc, shading: shading, frame: symbolFrame)
+            symbolFrame.origin = frame.origin.offsetBy(dx: 0, dy: frame.height/2)
+            drawSymbol(with: drawFunc, shading: shading, frame: symbolFrame)
+        case .three:
+            var symbolFrame = CGRect(origin: frame.origin, size: symbolSize)
+            for dy in stride(from: 0, to: frame.height, by: frame.height/3) {
+                symbolFrame.origin = frame.origin.offsetBy(dx: 0, dy: dy)
                 drawSymbol(with: drawFunc, shading: shading, frame: symbolFrame)
-            case .two:
-                var symbolFrame = CGRect(origin: frame.origin.offsetBy(dx: 0, dy: frame.height/6), size: symbolSize)
-                context.saveGState()
-                drawSymbol(with: drawFunc, shading: shading, frame: symbolFrame)
-                context.restoreGState()
-                symbolFrame.origin = frame.origin.offsetBy(dx: 0, dy: frame.height/2)
-                drawSymbol(with: drawFunc, shading: shading, frame: symbolFrame)
-            case .three:
-                var symbolFrame = CGRect(origin: frame.origin, size: symbolSize)
-                for dy in stride(from: 0, to: frame.height, by: frame.height/3) {
-                    symbolFrame.origin = frame.origin.offsetBy(dx: 0, dy: dy)
-                    context.saveGState()
-                    drawSymbol(with: drawFunc, shading: shading, frame: symbolFrame)
-                    context.restoreGState()
-                }
             }
         }
     }
@@ -87,8 +93,12 @@ class SetCardView: UIView {
             path.fill()
         case .striped:
             path.stroke()
-            path.addClip()
-            drawStripes(in: frame, for: path).stroke()
+            if let context = UIGraphicsGetCurrentContext() {
+                context.saveGState()
+                path.addClip()
+                drawStripes(in: frame).stroke()
+                context.restoreGState()
+            }
         }
     }
     
@@ -133,7 +143,7 @@ class SetCardView: UIView {
         return squiggle
     }
     
-    private func drawStripes(in rect: CGRect, for symbol: UIBezierPath) -> UIBezierPath {
+    private func drawStripes(in rect: CGRect) -> UIBezierPath {
         let stripes = UIBezierPath()
         stripes.move(to: rect.origin)
         for x in stride(from: floor(rect.origin.x - 10), to: floor(rect.origin.x + rect.width + 10), by: 1) {
@@ -142,7 +152,6 @@ class SetCardView: UIView {
                 stripes.addLine(to: CGPoint(x: CGFloat(x), y: rect.origin.y + rect.height))
             }
         }
-        symbol.addClip()
         return stripes
     }
     
@@ -150,7 +159,6 @@ class SetCardView: UIView {
         static let cornerRadiusToBoundsHeight: CGFloat = 0.06
         static let cardFaceFrameWidthToBoundsWidth: CGFloat = 0.55
         static let cardFaceFrameHeightToBoundsHeight: CGFloat = 0.70
-        static let symbolSizeToGridCellSize: CGFloat = 0.8
     }
     private var cornerRadius: CGFloat {
         return bounds.size.height * SizeRatio.cornerRadiusToBoundsHeight
@@ -163,12 +171,6 @@ class SetCardView: UIView {
     }
     private func calculateSymbolSize(within frame: CGRect) -> CGSize {
         return CGSize(width: frame.width, height: frame.height/3.75)
-    }
-}
-
-extension CGPoint {
-    func offsetBy(dx: CGFloat, dy: CGFloat) -> CGPoint {
-        return CGPoint(x: x+dx, y: y+dy)
     }
 }
 

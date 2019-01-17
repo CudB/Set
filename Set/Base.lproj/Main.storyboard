@@ -19,13 +19,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SCORE: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1XO-zt-knB">
-                                <rect key="frame" x="16" y="34.5" width="96.5" height="23.5"/>
+                                <rect key="frame" x="16" y="34.5" width="96.5" height="57.5"/>
                                 <fontDescription key="fontDescription" name="Menlo-Bold" family="Menlo" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qLW-fM-dAz">
-                                <rect key="frame" x="232" y="28" width="127" height="36.5"/>
+                                <rect key="frame" x="232" y="28" width="127" height="70.5"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="Menlo-Bold" family="Menlo" pointSize="20"/>
                                 <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
@@ -37,7 +37,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Dx-dx-t18">
-                                <rect key="frame" x="268" y="629" width="91" height="30"/>
+                                <rect key="frame" x="268" y="595" width="91" height="64"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="Menlo-Bold" family="Menlo" pointSize="20"/>
                                 <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
@@ -49,7 +49,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DLL-fJ-8pU">
-                                <rect key="frame" x="16" y="629" width="31" height="30"/>
+                                <rect key="frame" x="16" y="595" width="31" height="64"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="Menlo-Bold" family="Menlo" pointSize="17"/>
                                 <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
@@ -58,7 +58,7 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eOI-7m-Oau">
-                                <rect key="frame" x="55" y="629" width="171" height="30"/>
+                                <rect key="frame" x="55" y="595" width="171" height="64"/>
                                 <color key="backgroundColor" red="0.30588235289999999" green="0.4823529412" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="Menlo-Bold" family="Menlo" pointSize="20"/>
                                 <inset key="contentEdgeInsets" minX="25" minY="20" maxX="25" maxY="20"/>
@@ -69,13 +69,9 @@
                                     <action selector="addCardsButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="31F-WX-Z2K"/>
                                 </connections>
                             </button>
-                            <view opaque="NO" contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="jjV-ie-ysr" customClass="SetCardView" customModule="Set" customModuleProvider="target">
-                                <rect key="frame" x="19" y="74" width="337" height="539"/>
+                            <view opaque="NO" contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="jjV-ie-ysr" customClass="SetCardGridView" customModule="Set" customModuleProvider="target">
+                                <rect key="frame" x="16" y="108" width="343" height="471"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="jjV-ie-ysr" secondAttribute="height" multiplier="5:8" id="Owp-oZ-VMx"/>
-                                    <constraint firstAttribute="width" priority="750" constant="800" id="vMh-Ar-Okv"/>
-                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.91995824744858723" green="0.91995824744858723" blue="0.91995824744858723" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -85,8 +81,8 @@
                             <constraint firstItem="qLW-fM-dAz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1XO-zt-knB" secondAttribute="trailing" constant="8" symbolic="YES" id="7tt-6A-Lgl"/>
                             <constraint firstItem="eOI-7m-Oau" firstAttribute="leading" secondItem="DLL-fJ-8pU" secondAttribute="trailing" constant="8" symbolic="YES" id="7u7-Yd-sWl"/>
                             <constraint firstItem="4Dx-dx-t18" firstAttribute="height" secondItem="eOI-7m-Oau" secondAttribute="height" id="AiK-ai-fAV"/>
-                            <constraint firstItem="jjV-ie-ysr" firstAttribute="top" relation="greaterThanOrEqual" secondItem="1XO-zt-knB" secondAttribute="bottom" constant="16" id="DEk-uz-BRL"/>
-                            <constraint firstItem="jjV-ie-ysr" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="Exy-G6-sV6"/>
+                            <constraint firstItem="jjV-ie-ysr" firstAttribute="top" secondItem="1XO-zt-knB" secondAttribute="bottom" constant="16" id="DEk-uz-BRL"/>
+                            <constraint firstItem="jjV-ie-ysr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="Exy-G6-sV6"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="4Dx-dx-t18" secondAttribute="trailing" constant="16" id="G22-hS-vu5"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="eOI-7m-Oau" secondAttribute="bottom" constant="8" id="JaA-2i-PL0"/>
                             <constraint firstItem="1XO-zt-knB" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="14.5" id="MAV-AT-Lxw"/>
@@ -94,10 +90,10 @@
                             <constraint firstItem="4Dx-dx-t18" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="eOI-7m-Oau" secondAttribute="trailing" constant="8" id="T0T-UJ-2QO"/>
                             <constraint firstItem="DLL-fJ-8pU" firstAttribute="height" secondItem="eOI-7m-Oau" secondAttribute="height" id="WoA-kI-VtH"/>
                             <constraint firstItem="qLW-fM-dAz" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="ZhQ-nf-t4t"/>
-                            <constraint firstItem="eOI-7m-Oau" firstAttribute="top" relation="greaterThanOrEqual" secondItem="jjV-ie-ysr" secondAttribute="bottom" constant="16" id="cEI-fr-4zt"/>
+                            <constraint firstItem="eOI-7m-Oau" firstAttribute="top" secondItem="jjV-ie-ysr" secondAttribute="bottom" constant="16" id="cEI-fr-4zt"/>
                             <constraint firstItem="DLL-fJ-8pU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="eO1-UY-6na"/>
                             <constraint firstItem="1XO-zt-knB" firstAttribute="centerY" secondItem="qLW-fM-dAz" secondAttribute="centerY" id="eOR-oI-tJL"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="jjV-ie-ysr" secondAttribute="trailing" constant="16" id="fex-Hz-4Yz"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="jjV-ie-ysr" secondAttribute="trailing" constant="16" id="fex-Hz-4Yz"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="qLW-fM-dAz" secondAttribute="trailing" constant="16" id="fzr-RN-Zfh"/>
                             <constraint firstItem="DLL-fJ-8pU" firstAttribute="centerY" secondItem="eOI-7m-Oau" secondAttribute="centerY" id="iHH-jt-CxN"/>
                             <constraint firstItem="1XO-zt-knB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="qDp-qO-deH"/>

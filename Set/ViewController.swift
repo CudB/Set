@@ -69,6 +69,10 @@ class ViewController: UIViewController {
 //    }
     
     private func updateViewFromModel() {
+        
+        // create set cards using setcardview
+        
+        
 //        for index in cardButtons.indices {
 //            let button = cardButtons[index]
 //
@@ -131,7 +135,7 @@ class ViewController: UIViewController {
 //        var symbol: String
 //        var color: UIColor
 //        var attributes: [NSAttributedString.Key:Any]
-//        
+//
 ////        switch card.symbol {
 ////        case .circle:
 ////            symbol = "●"
@@ -140,7 +144,7 @@ class ViewController: UIViewController {
 ////        case .triangle:
 ////            symbol = "▲"
 ////        }
-//        
+//
 //        switch card.number {
 //        case .one:
 //            break
@@ -149,7 +153,7 @@ class ViewController: UIViewController {
 //        case .three:
 //            symbol = repeatString(string: symbol, for: 3)
 //        }
-//        
+//
 //        switch card.color {
 //        case .red:
 //            color = UIColor.red
@@ -158,7 +162,7 @@ class ViewController: UIViewController {
 //        case .blue:
 //            color = UIColor.blue
 //        }
-//        
+//
 //        switch card.shading {
 //        case .open:
 //            attributes = [
@@ -174,7 +178,7 @@ class ViewController: UIViewController {
 //                .foregroundColor: color.withAlphaComponent(0.15)
 //            ]
 //        }
-//        
+//
 //        let attributedString = NSAttributedString(string: symbol, attributes: attributes)
 //        button.setAttributedTitle(attributedString, for: UIControl.State.normal)
     }
