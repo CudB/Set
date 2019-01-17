@@ -35,21 +35,20 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var setCardGridView: SetCardGridView! {
         didSet {
+            
             let swipe = UISwipeGestureRecognizer(target: self, action: #selector(drawCards))
             swipe.direction = .up
             setCardGridView.addGestureRecognizer(swipe)
         }
     }
     
+    @IBAction func tapGrid(_ sender: UITapGestureRecognizer) {
+        setCardGridView.tappedLocation = sender.location(in: setCardGridView)
+    }
+    
     @IBAction func shuffleCards(_ sender: UIRotationGestureRecognizer) {
-        switch sender.state {
-        case .began:
-            game.hand.shuffle()
-            updateViewFromModel()
-        default:
-            break
-        }
-        
+        game.hand.shuffle()
+        updateViewFromModel()
     }
     
     @objc func drawCards() {

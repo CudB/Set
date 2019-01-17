@@ -75,6 +75,7 @@
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="kCE-vm-nFI" appends="YES" id="X1O-8i-Fyr"/>
+                                    <outletCollection property="gestureRecognizers" destination="9dh-SZ-mzB" appends="YES" id="aBa-gX-65R"/>
                                 </connections>
                             </view>
                         </subviews>
@@ -120,6 +121,11 @@
                         <action selector="shuffleCards:" destination="BYZ-38-t0r" id="4EN-Vc-M8I"/>
                     </connections>
                 </rotationGestureRecognizer>
+                <tapGestureRecognizer id="9dh-SZ-mzB">
+                    <connections>
+                        <action selector="tapGrid:" destination="BYZ-38-t0r" id="Zd0-jg-zzY"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="53.600000000000001" y="27.436281859070466"/>
         </scene>

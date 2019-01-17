@@ -11,9 +11,8 @@ import UIKit
 @IBDesignable
 class SetCardGridView: UIView
 {
-    var cardSubViews = [UIView]()
-    
     var cards = [SetCard]() { didSet { setNeedsDisplay(); setNeedsLayout() } }
+    var tappedLocation = CGPoint() { didSet { setNeedsDisplay(); setNeedsLayout() } }
     
     // Create a grid that will be used to lay out cards represented by SetCardView.
     lazy var grid = Grid(layout: Grid.Layout.aspectRatio(Constants.cardDimensionRatio), frame: bounds)
@@ -24,16 +23,18 @@ class SetCardGridView: UIView
         return card
     }
     
+    var cardSubViews = [UIView]()
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
         for subView in cardSubViews {
             subView.removeFromSuperview()
         }
+        cardSubViews.removeAll()
         
         grid.cellCount = cards.count
         grid.frame = bounds
-
         for index in 0..<grid.cellCount {
             if let cell = grid[index] {
                 let card = createSetCard(index: index)
@@ -43,7 +44,11 @@ class SetCardGridView: UIView
                 cardSubViews.append(card)
             }
         }
-        
+        for (index, cardSubView) in cardSubViews.enumerated() {
+            if cardSubView.frame.contains(tappedLocation) {
+                print("touched card: \(index)")
+            }
+        }
     }
 
     private struct Constants {
