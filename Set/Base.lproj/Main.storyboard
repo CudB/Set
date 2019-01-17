@@ -72,6 +72,10 @@
                             <view opaque="NO" contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="jjV-ie-ysr" customClass="SetCardGridView" customModule="Set" customModuleProvider="target">
                                 <rect key="frame" x="16" y="108" width="343" height="471"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="kCE-vm-nFI" appends="YES" id="X1O-8i-Fyr"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.91995824744858723" green="0.91995824744858723" blue="0.91995824744858723" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -111,6 +115,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <rotationGestureRecognizer delaysTouchesBegan="YES" id="kCE-vm-nFI">
+                    <connections>
+                        <action selector="shuffleCards:" destination="BYZ-38-t0r" id="4EN-Vc-M8I"/>
+                    </connections>
+                </rotationGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="53.600000000000001" y="27.436281859070466"/>
         </scene>

@@ -19,15 +19,13 @@ class ViewController: UIViewController {
         remainingCardsButton.layer.borderColor = UIColor.black.cgColor
         remainingCardsButton.isEnabled = false
         updateViewFromModel()
-//        for index in cardButtons.indices {
-//            let button = cardButtons[index]
-//            button.layer.cornerRadius = 8.0
-//        }
     }
     
-    private lazy var game = Set()
-
-//    @IBOutlet var cardButtons: [UIButton]!
+    private var game = Set() {
+        didSet {
+            updateViewFromModel()
+        }
+    }
     
     @IBOutlet weak var newGameButton: UIButton!
     @IBOutlet weak var addCardsButton: UIButton!
@@ -35,7 +33,28 @@ class ViewController: UIViewController {
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var remainingCardsButton: UIButton!
     
-    @IBOutlet weak var setCardGridView: SetCardGridView!
+    @IBOutlet weak var setCardGridView: SetCardGridView! {
+        didSet {
+            let swipe = UISwipeGestureRecognizer(target: self, action: #selector(drawCards))
+            swipe.direction = .up
+            setCardGridView.addGestureRecognizer(swipe)
+        }
+    }
+    
+    @IBAction func shuffleCards(_ sender: UIRotationGestureRecognizer) {
+        switch sender.state {
+        case .began:
+            game.hand.shuffle()
+            updateViewFromModel()
+        default:
+            break
+        }
+        
+    }
+    
+    @objc func drawCards() {
+        game.draw(amount: Set.CardLimits.cardsTakenPerDraw)
+    }
     
     // Reveals a possible match to the player.
     @IBAction func showSetButton(_ sender: UIButton) {
@@ -52,13 +71,13 @@ class ViewController: UIViewController {
     }
     
     @IBAction func addCardsButton(_ sender: UIButton) {
-        game.draw(amount: 3)
-        updateViewFromModel()
+        game.draw(amount: Set.CardLimits.cardsTakenPerDraw)
+//        updateViewFromModel()
     }
     
     @IBAction func newGameButton(_ sender: UIButton) {
         game.startNewGame()
-        updateViewFromModel()
+//        updateViewFromModel()
     }
     
 //    @IBAction func touchCard(_ sender: UIButton) {
@@ -108,7 +127,7 @@ class ViewController: UIViewController {
         scoreLabel.text = "SCORE: \(game.statistics.score)"
         remainingCardsButton.setTitle("\(game.deck.cards.count)", for: UIControl.State.normal)
         
-        // Disables addCardsButton if there are not enough cards in the deck or if there are 24 drawn cards.
+        // Disables addCardsButton if there are not enough cards in the deck.
         if game.deck.cards.count < 1 {
             addCardsButton.isEnabled = false
             addCardsButton.alpha = 0.15
@@ -116,82 +135,6 @@ class ViewController: UIViewController {
             addCardsButton.isEnabled = true
             addCardsButton.alpha = 1
         }
-    }
-    
-    // Hides a button from view without using .hidden.
-    private func disableCardButton(button: UIButton) {
-        button.alpha = 0
-        button.isEnabled = false
-        button.layer.borderWidth = 0
-    }
-    
-    // Reveals a button from view without using .hidden.
-    private func enableCardButton(button: UIButton) {
-        button.alpha = 1
-        button.isEnabled = true
-        button.layer.borderWidth = 1
-    }
-
-    // Assigns a face to each button using a card's attributes
-    private func assignCardFace(to button: UIButton, from card: SetCard) {
-//        var symbol: String
-//        var color: UIColor
-//        var attributes: [NSAttributedString.Key:Any]
-//
-////        switch card.symbol {
-////        case .circle:
-////            symbol = "●"
-////        case .square:
-////            symbol = "■"
-////        case .triangle:
-////            symbol = "▲"
-////        }
-//
-//        switch card.number {
-//        case .one:
-//            break
-//        case .two:
-//            symbol = repeatString(string: symbol, for: 2)
-//        case .three:
-//            symbol = repeatString(string: symbol, for: 3)
-//        }
-//
-//        switch card.color {
-//        case .red:
-//            color = UIColor.red
-//        case .green:
-//            color = UIColor.green
-//        case .blue:
-//            color = UIColor.blue
-//        }
-//
-//        switch card.shading {
-//        case .open:
-//            attributes = [
-//                .strokeWidth: 5.0,
-//                .strokeColor: color
-//            ]
-//        case .solid:
-//            attributes = [
-//                .foregroundColor: color
-//            ]
-//        case .striped:
-//            attributes = [
-//                .foregroundColor: color.withAlphaComponent(0.15)
-//            ]
-//        }
-//
-//        let attributedString = NSAttributedString(string: symbol, attributes: attributes)
-//        button.setAttributedTitle(attributedString, for: UIControl.State.normal)
-    }
-    
-    // Takes a string and repeats it count number of times
-    private func repeatString(string: String, for count: Int) -> String {
-        var repeatedString = string
-        for _ in 1..<count {
-            repeatedString += string
-        }
-        return repeatedString
     }
 }
 

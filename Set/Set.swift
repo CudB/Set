@@ -11,12 +11,12 @@ import Foundation
 struct Set
 {
     private struct ScoreChange {
-        static let onSuccessfulMatch = 5
-        static let onUnsuccessfulMatch = -10
-        static let onDrawingCardWhileMatchPresent = -10
+        static let onSuccessfulMatch = 100
+        static let onUnsuccessfulMatch = -200
+        static let onDrawingCardWhileMatchPresent = -100
     }
     
-    private struct CardLimits {
+    struct CardLimits {
         static let maxChosenCards = 3
         static let cardsTakenPerDraw = 3
         static let startingNumOfCards = 12
@@ -74,7 +74,9 @@ struct Set
     
     //TODO: Do something about this function? Using it to let the view controller draw cards.
     mutating func draw(amount: Int) {
-        hand.cards.append(contentsOf: deck.draw(amount: amount))
+        if deck.cards.count >= amount {
+            hand.cards.append(contentsOf: deck.draw(amount: amount))
+        }
     }
     
     mutating func startNewGame() {

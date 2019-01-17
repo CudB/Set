@@ -18,6 +18,7 @@ class SetCardView: UIView {
         self.card = card
     }
     
+    //TODO: implement this
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -34,16 +35,12 @@ class SetCardView: UIView {
         drawCardFace(card: card, inFrame: cardFaceFrame)
     }
     
+    // Draws the face of a set card using it's four attributes.
     private func drawCardFace(card: SetCard, inFrame frame: CGRect) {
-        let color = card.color
-        let type = card.symbol
-        let shading = card.shading
-        let number = card.number
-        
         var drawFunc: (CGRect) -> UIBezierPath
         let symbolSize = calculateSymbolSize(within: frame)
         
-        switch color {
+        switch card.color {
         case .red:
             UIColor.red.setFill()
             UIColor.red.setStroke()
@@ -55,7 +52,7 @@ class SetCardView: UIView {
             UIColor.blue.setStroke()
         }
         
-        switch type {
+        switch card.symbol {
         case .oval:
             drawFunc = drawOval
         case .diamond:
@@ -64,24 +61,26 @@ class SetCardView: UIView {
             drawFunc = drawSquiggle
         }
         
-        switch number {
+        // Draws out symbols on card in an aesthetically pleasing way.
+        switch card.number {
         case .one:
             let symbolFrame = CGRect(origin: frame.origin.offsetBy(dx: 0, dy: frame.height/3), size: symbolSize)
-            drawSymbol(with: drawFunc, shading: shading, frame: symbolFrame)
+            drawSymbol(with: drawFunc, shading: card.shading, frame: symbolFrame)
         case .two:
             var symbolFrame = CGRect(origin: frame.origin.offsetBy(dx: 0, dy: frame.height/6), size: symbolSize)
-            drawSymbol(with: drawFunc, shading: shading, frame: symbolFrame)
+            drawSymbol(with: drawFunc, shading: card.shading, frame: symbolFrame)
             symbolFrame.origin = frame.origin.offsetBy(dx: 0, dy: frame.height/2)
-            drawSymbol(with: drawFunc, shading: shading, frame: symbolFrame)
+            drawSymbol(with: drawFunc, shading: card.shading, frame: symbolFrame)
         case .three:
             var symbolFrame = CGRect(origin: frame.origin, size: symbolSize)
             for dy in stride(from: 0, to: frame.height, by: frame.height/3) {
                 symbolFrame.origin = frame.origin.offsetBy(dx: 0, dy: dy)
-                drawSymbol(with: drawFunc, shading: shading, frame: symbolFrame)
+                drawSymbol(with: drawFunc, shading: card.shading, frame: symbolFrame)
             }
         }
     }
     
+    // Draws a symbol with appropriate shading.
     private func drawSymbol(with drawFunc: (CGRect) -> UIBezierPath, shading: SetCard.Shading, frame: CGRect) {
         let path = drawFunc(frame)
         switch shading {
@@ -115,7 +114,6 @@ class SetCardView: UIView {
     }
     
     private func drawSquiggle(in rect: CGRect) -> UIBezierPath {
-        // Drawing this curve was the most asinine thing I have ever done. I'm sure there's a clever way to figure out the numbers for these curves and I've just wasted my time.
         let squiggle = UIBezierPath()
         squiggle.move(to: rect.origin.offsetBy(dx: rect.width * 0.15, dy: rect.height * 0.87))
         squiggle.addCurve(
@@ -141,6 +139,7 @@ class SetCardView: UIView {
         return squiggle
     }
     
+    // Returns a UIBezierPath containing vertical lines for cards with striped shading.
     private func drawStripes(in rect: CGRect) -> UIBezierPath {
         let stripes = UIBezierPath()
         stripes.move(to: rect.origin)
