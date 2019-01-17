@@ -11,17 +11,11 @@ import UIKit
 @IBDesignable
 class SetCardView: UIView {
     
-    var type = SetCard.Symbol.diamond { didSet { setNeedsDisplay(); setNeedsLayout() } }
-    var color = SetCard.Color.blue { didSet { setNeedsDisplay(); setNeedsLayout() } }
-    var number = SetCard.Number.one { didSet { setNeedsDisplay(); setNeedsLayout() } }
-    var shading = SetCard.Shading.solid { didSet { setNeedsDisplay(); setNeedsLayout() } }
+    var card = SetCard() { didSet { setNeedsDisplay(); setNeedsLayout() } }
     
-    init(type: SetCard.Symbol, color: SetCard.Color, number: SetCard.Number, shading: SetCard.Shading, frame: CGRect) {
+    init(card: SetCard, frame: CGRect) {
         super.init(frame: frame)
-        self.type = type
-        self.color = color
-        self.number = number
-        self.shading = shading
+        self.card = card
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -37,10 +31,14 @@ class SetCardView: UIView {
         
         // Create the face of the card and fit it to the frame.
         let cardFaceFrame = CGRect(origin: cardFaceFrameOrigin, size: cardFaceFrameSize)
-        drawCardFace(type: type, number: number, color: color, shading: shading, inFrame: cardFaceFrame)
+        drawCardFace(card: card, inFrame: cardFaceFrame)
     }
     
-    private func drawCardFace(type: SetCard.Symbol, number: SetCard.Number, color: SetCard.Color, shading: SetCard.Shading, inFrame frame: CGRect) {
+    private func drawCardFace(card: SetCard, inFrame frame: CGRect) {
+        let color = card.color
+        let type = card.symbol
+        let shading = card.shading
+        let number = card.number
         
         var drawFunc: (CGRect) -> UIBezierPath
         let symbolSize = calculateSymbolSize(within: frame)

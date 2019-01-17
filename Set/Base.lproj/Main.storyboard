@@ -106,6 +106,7 @@
                         <outlet property="newGameButton" destination="qLW-fM-dAz" id="RWg-y9-yQu"/>
                         <outlet property="remainingCardsButton" destination="DLL-fJ-8pU" id="DLJ-QX-oAc"/>
                         <outlet property="scoreLabel" destination="1XO-zt-knB" id="UD2-xw-cdu"/>
+                        <outlet property="setCardGridView" destination="jjV-ie-ysr" id="QL4-ja-6nq"/>
                         <outlet property="showSetButton" destination="4Dx-dx-t18" id="G8F-cb-7GA"/>
                     </connections>
                 </viewController>

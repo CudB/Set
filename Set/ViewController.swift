@@ -35,6 +35,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var remainingCardsButton: UIButton!
     
+    @IBOutlet weak var setCardGridView: SetCardGridView!
+    
     // Reveals a possible match to the player.
     @IBAction func showSetButton(_ sender: UIButton) {
 //        if let setIndices = game.hand.cards.retrieveSetIndices {
@@ -70,7 +72,7 @@ class ViewController: UIViewController {
     
     private func updateViewFromModel() {
         
-        // create set cards using setcardview
+        setCardGridView.cards = game.hand.cards
         
         
 //        for index in cardButtons.indices {
@@ -107,7 +109,7 @@ class ViewController: UIViewController {
         remainingCardsButton.setTitle("\(game.deck.cards.count)", for: UIControl.State.normal)
         
         // Disables addCardsButton if there are not enough cards in the deck or if there are 24 drawn cards.
-        if game.deck.cards.count < 1 || game.hand.cards.count == game.maxDrawnCards{
+        if game.deck.cards.count < 1 {
             addCardsButton.isEnabled = false
             addCardsButton.alpha = 0.15
         } else {

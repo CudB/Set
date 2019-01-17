@@ -9,16 +9,17 @@
 import UIKit
 
 //@IBDesignable
-class SetCardGridView: UIView {
+class SetCardGridView: UIView
+{
     var cardSubViews = [UIView]()
     
-    var numberOfCards = 12
+    var cards = [SetCard]() { didSet { setNeedsDisplay(); setNeedsLayout() } }
     
     // Create a grid that will be used to lay out cards represented by SetCardView.
     lazy var grid = Grid(layout: Grid.Layout.aspectRatio(Constants.cardDimensionRatio), frame: bounds)
     
-    private func createSetCard() -> UIView {
-        let card = SetCardView(type: SetCard.Symbol.squiggle, color: SetCard.Color.blue, number: SetCard.Number.three, shading: SetCard.Shading.striped, frame: frame)
+    private func createSetCard(index: Int) -> UIView {
+        let card = SetCardView(card: cards[index], frame: frame)
         addSubview(card)
         return card
     }
@@ -30,12 +31,12 @@ class SetCardGridView: UIView {
             subView.removeFromSuperview()
         }
         
-        grid.cellCount = numberOfCards
+        grid.cellCount = cards.count
         grid.frame = bounds
 
-        for cellIndex in 0..<grid.cellCount {
-            if let cell = grid[cellIndex] {
-                let card = createSetCard()
+        for index in 0..<grid.cellCount {
+            if let cell = grid[index] {
+                let card = createSetCard(index: index)
                 card.frame.size = scaleCGSize(by: Constants.cardSizeToGridCellSizeRatio, size: cell.size)
                 card.frame.origin = cell.origin.offsetBy(dx: (cell.size.width - card.frame.size.width)/2, dy: (cell.size.height - card.frame.size.height)/2)
                 card.backgroundColor = UIColor.clear

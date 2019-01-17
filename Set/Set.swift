@@ -19,11 +19,8 @@ struct Set
     private struct CardLimits {
         static let maxChosenCards = 3
         static let cardsTakenPerDraw = 3
-        static let startingNumOfCards = 1
+        static let startingNumOfCards = 12
     }
-    
-    //TODO: to be removed once scalable card views are implemented.
-    let maxDrawnCards = 24
     
     private(set) var deck = SetCardDeck()
     private(set) var hand = SetCardHand()

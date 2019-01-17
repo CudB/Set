@@ -15,10 +15,10 @@ struct SetCard: CustomStringConvertible
         return "\(number) \(shading) \(color) \(symbol)"
     }
     
-    let number: Number
-    let symbol: Symbol
-    let color: Color
-    let shading: Shading
+    var number: Number = .one
+    var symbol: Symbol = .oval
+    var color: Color = .blue
+    var shading: Shading = .open
     
     enum Number: Int, CaseIterable, CustomStringConvertible {
         case one = 1
